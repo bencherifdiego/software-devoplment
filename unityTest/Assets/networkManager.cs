@@ -93,13 +93,23 @@ public class networkManager : MonoBehaviour
 
                         try
                         {
-                            if (jobj[stoplichten[i].name].ToString() == "0")
+                            if (jobj[stoplichten[i].name].ToString() == "0" || Convert.ToInt32(jobj[stoplichten[i].name]) == 0)
                             {
-                                stoplicht.status = 0;
+                                if (stoplicht.status != 0)
+                                {
+                                    stoplicht.status = 0;
+                                    stoplicht.statusChanged = true;
+                                    //stoplicht.StartCoroutine("changeToRed", 5f);
+                                }
                             }
-                            else if (jobj[stoplichten[i].name].ToString() == "1")
+                            else if (jobj[stoplichten[i].name].ToString() == "1" || Convert.ToInt32(jobj[stoplichten[i].name]) == 1)
                             {
-                                stoplicht.status = 1;
+                                if (stoplicht.status != 1)
+                                {
+                                    stoplicht.status = 1;
+                                    stoplicht.statusChanged = true;
+                                    //stoplicht.StartCoroutine("changeToGreen", 5f);
+                                }
                             }
                         }
                         catch

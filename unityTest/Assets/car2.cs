@@ -68,7 +68,7 @@ public class car2 : MonoBehaviour
     {
         if (other.tag == "stop")
         {
-            int status = other.GetComponentInParent<stoplicht>().status;
+            int status = other.GetComponentInParent<stoplicht>().statuss;
 
             if (status == 0)
             {

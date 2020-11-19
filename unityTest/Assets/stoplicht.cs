@@ -12,11 +12,16 @@ public class stoplicht : MonoBehaviour
     Renderer sl;
     public Material green;
     public Material red;
+    public Material orange;
 
     public int status = 0;
+    public bool statusChanged = false;
+    public int statuss = 0;
     public int hasCar = 0;
     public int hasCarTimer;
     public int hasCarMax = 5;
+
+    public float delay = 5f;
 
     float timer = 5f;
     float time = 0;
@@ -28,23 +33,48 @@ public class stoplicht : MonoBehaviour
 
         transform.GetChild(0).GetComponent<Renderer>().enabled = false;
         transform.GetChild(2).GetComponent<Renderer>().enabled = false;
+
+        sl.material = red;
     }
 
     //Update is called once per frame
     void Update()
     {
-        if (status == 0)
+        if (statusChanged)
         {
-            sl.material = red;
-        }
-        else if (status == 1)
-        {
-            sl.material = green;
+            if (status == 0)
+            {
+                //StartCoroutine("changeToRed", 5f);
+                statuss = 0;
+                sl.material = red;
+            }
+            else if (status == 1)
+            {
+                //StartCoroutine("changeToGreen", 5f);
+                statuss = 1;
+                sl.material = green;
+            }
         }
 
         jason jsn = jason.instance;
 
         StartCoroutine("changeJson", jsn);
+    }
+
+    IEnumerator changeToGreen(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        sl.material = green;
+        statuss = 1;
+    }
+
+    IEnumerator changeToRed(float delay)
+    {
+        Debug.Log("changeToRed called");
+        sl.material = orange;
+        statuss = 0;
+        yield return new WaitForSeconds(delay);
+        sl.material = red;
     }
 
     IEnumerator changeJson(jason jsn)
