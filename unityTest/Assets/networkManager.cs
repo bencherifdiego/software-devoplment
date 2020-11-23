@@ -59,6 +59,10 @@ public class networkManager : MonoBehaviour
         Thread recvThread = new Thread(childref);
         recvThread.Start();
 
+        ThreadStart childref2 = new ThreadStart(send);
+        Thread sendd = new Thread(childref2);
+        sendd.Start();
+
         StartCoroutine("proccesMessage");
     }
 
@@ -143,11 +147,6 @@ public class networkManager : MonoBehaviour
         {
             if (sender.Connected)
             {
-                if (sendToServer)
-                {
-                    sender.Send(Encoding.UTF8.GetBytes(formatHeader(jason.instance.jobj.ToString())));
-                }
-
                 try
                 {
                     byte[] messageReceived = new byte[1024];
@@ -168,6 +167,22 @@ public class networkManager : MonoBehaviour
                 sender.Connect(localEndPoint);
             }
             Thread.Sleep(50);
+        }
+    }
+
+    void send()
+    {
+        while (true)
+        {
+            if (sender.Connected)
+            {
+                if (sendToServer)
+                {
+                    sender.Send(Encoding.UTF8.GetBytes(formatHeader(jason.instance.jobj.ToString())));
+                }
+
+                Thread.Sleep(100);
+            }
         }
     }
 }

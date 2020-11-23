@@ -1,7 +1,7 @@
 import socket
 import json
 import time
-
+import threading    
 import random
 
 y = True
@@ -26,12 +26,10 @@ def formatHeader(y):
 with open('jason_controller.json') as file:
     jason = json.load(file)
 
-jsonSimulator = None
-
 host = '127.0.0.1'
 port = 54000
 
-def receiveFromSimulator():
+def receiveFromSimulator(jsonSimulator):
     #car
     Group01A_array = ["A1-1", "A1-2", "A3-1", "A3-2", "A3-3", "A3-4"]
     Group01B_array = ["A1-1", "A1-2", "A2-1", "A2-2", "A3-3", "A4-4"]
@@ -652,6 +650,20 @@ def groepW3A1():
     jason["A6-3"] = "0"
     jason["A6-4"] = "0"
 
+class myThread (threading.Thread):
+    def __init__(self, threadID):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+    def run(self):
+        while True:
+            data = conn.recv(1024)
+            data = data.decode("utf-8")
+            splittedData = data.split(":", 1)
+            if (len(splittedData[1]) == int(splittedData[0])):
+                jsonSimulator = json.loads(splittedData[1])
+                if (jsonSimulator != None):
+                    receiveFromSimulator(jsonSimulator)    
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     sock.bind((host, port))
     sock.listen()
@@ -659,15 +671,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     conn, addr = sock.accept()
     with conn:
         print('Connected by: ', addr)
+        thread1 = myThread(1)
+        thread1.start()
         while True:
             if receiveFromClient == "y":
-                data = conn.recv(1024)
-                data = data.decode("utf-8")
-                splittedData = data.split(":", 1)
-                if (len(splittedData[1]) == int(splittedData[0])):
-                    jsonSimulator = json.loads(splittedData[1])
-                    
-                    receiveFromSimulator()
+                
 
                     z = json.dumps(jason)
 
