@@ -61,7 +61,7 @@ def receiveFromSimulator(jsonSimulator):
 
     for x in jsonSimulator :
         if(jsonSimulator[x] == 1):
-            print(x)
+            #print(x)
             TrafficLightsThatHasCarsEast.append(x)
             
     resultsEast = []
@@ -135,7 +135,7 @@ def receiveFromSimulator(jsonSimulator):
                 count += 1
 
         amountOfTrafficlightMatchesWest[i].append(count)
-    print(amountOfTrafficlightMatchesWest)
+    #print(amountOfTrafficlightMatchesWest)
 
     highestAmountOfMatchesGroupNameEast = ""
     highestAmountOfMatchesNumberEast = 0
@@ -144,7 +144,7 @@ def receiveFromSimulator(jsonSimulator):
             highestAmountOfMatchesNumberEast = amountOfTrafficlightMatchesEast[i][1]
             highestAmountOfMatchesGroupNameEast = amountOfTrafficlightMatchesEast[i][0]
 
-    print(highestAmountOfMatchesGroupNameEast)
+    #print(highestAmountOfMatchesGroupNameEast)
     groepAllRed()
     if(highestAmountOfMatchesGroupNameEast == "groep01A"):
         Group01A()
@@ -166,8 +166,6 @@ def receiveFromSimulator(jsonSimulator):
         GroupB01B()
     elif(highestAmountOfMatchesGroupNameEast == "groepB02"):
         GroupB02()
-    else:
-        print("nothing")
 
     highestAmountOfMatchesGroupNameWest = ""
     highestAmountOfMatchesNumberWest = 0
@@ -176,7 +174,7 @@ def receiveFromSimulator(jsonSimulator):
             highestAmountOfMatchesNumberWest = amountOfTrafficlightMatchesWest[i][1]
             highestAmountOfMatchesGroupNameWest = amountOfTrafficlightMatchesWest[i][0]
 
-    print(highestAmountOfMatchesGroupNameWest)
+    #print(highestAmountOfMatchesGroupNameWest)
 
     if(highestAmountOfMatchesGroupNameWest == "groepW1A"):
         GroupW1A()
@@ -196,8 +194,6 @@ def receiveFromSimulator(jsonSimulator):
         GroupBW1B()
     elif (highestAmountOfMatchesGroupNameWest == "groepBW1C"):
         GroupBW1C()
-    else:
-        print("nothing")
 
 def Group01A():
     jason["A1-1"] = 1
@@ -213,7 +209,7 @@ def Group01B():
     jason["A2-1"] = 1
     jason["A2-2"] = 1
     jason["A3-3"] = 1
-    jason["A4-4"] = 1
+    jason["A3-4"] = 1
 
 def Group01C():
     jason["A1-1"] = 1
@@ -657,12 +653,16 @@ class myThread (threading.Thread):
     def run(self):
         while True:
             data = conn.recv(1024)
+            print(time.strftime("%H:%M:%S", time.localtime()), " : message received")
             data = data.decode("utf-8")
             splittedData = data.split(":", 1)
             if (len(splittedData[1]) == int(splittedData[0])):
+                print(time.strftime("%H:%M:%S", time.localtime()), " : json correct length")
                 jsonSimulator = json.loads(splittedData[1])
                 if (jsonSimulator != None):
-                    receiveFromSimulator(jsonSimulator)    
+                    receiveFromSimulator(jsonSimulator)  
+            else:
+                print(time.strftime("%H:%M:%S", time.localtime()), " : json incorrect length")  
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     sock.bind((host, port))
@@ -675,13 +675,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         thread1.start()
         while True:
             if receiveFromClient == "y":
-                
-
                     z = json.dumps(jason)
 
                     message = formatHeader(z)
 
                     conn.sendall(message.encode("utf-8"))
+                    print(time.strftime("%H:%M:%S", time.localtime()), " : message sent")
 
                     time.sleep(sleepTime)
             else:

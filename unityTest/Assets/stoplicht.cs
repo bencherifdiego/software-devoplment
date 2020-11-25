@@ -44,13 +44,13 @@ public class stoplicht : MonoBehaviour
         {
             if (status == 0)
             {
-                //StartCoroutine("changeToRed", 5f);
-                statuss = 0;
-                sl.material = red;
+                StartCoroutine("changeToRed", 5f);
+                //statuss = 0;
+                //sl.material = red;
             }
             else if (status == 1)
             {
-                //StartCoroutine("changeToGreen", 5f);
+                //StartCoroutine("changeToGreen", 0.5f);
                 statuss = 1;
                 sl.material = green;
             }
@@ -70,7 +70,6 @@ public class stoplicht : MonoBehaviour
 
     IEnumerator changeToRed(float delay)
     {
-        Debug.Log("changeToRed called");
         sl.material = orange;
         statuss = 0;
         yield return new WaitForSeconds(delay);

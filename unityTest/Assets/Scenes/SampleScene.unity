@@ -3362,7 +3362,7 @@ MonoBehaviour:
   - {fileID: 1753357039}
   - {fileID: 1599384634}
   - {fileID: 2015213187}
-  spawnDelay: 5
+  spawnDelay: 2
 --- !u!4 &553929450
 Transform:
   m_ObjectHideFlags: 0
