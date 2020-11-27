@@ -93,26 +93,51 @@ public class networkManager : MonoBehaviour
 
                     for (int i = 0; i < stoplichten.Count; i++)
                     {
-                        stoplicht stoplicht = stoplichten[i].GetComponent<stoplicht>();
-
                         try
                         {
-                            if (jobj[stoplichten[i].name].ToString() == "0" || Convert.ToInt32(jobj[stoplichten[i].name]) == 0)
+                            Debug.Log(stoplichten[i]);
+                            if (stoplichten[i].name == "Bus")
                             {
-                                if (stoplicht.statuss != 0)
+                                Debug.Log("b1");
+                                if (jobj["B1-1"].ToString() == "0" || Convert.ToInt32(jobj["B1-1"]) == 0)
+                                {
+                                    stoplichten[i].GetComponent<stoplichtBus>().b1 = 0;
+                                    stoplichten[i].GetComponent<stoplichtBus>().statusChanged = true;
+                                }
+                                else if (jobj["B1-1"].ToString() == "1" || Convert.ToInt32(jobj["B1-1"]) == 1)
+                                {
+                                    stoplichten[i].GetComponent<stoplichtBus>().b1 = 1;
+                                    stoplichten[i].GetComponent<stoplichtBus>().statusChanged = true;
+                                }
+
+                                Debug.Log("b2");
+                                if (jobj["B1-2"].ToString() == "0" || Convert.ToInt32(jobj["B1-2"]) == 0)
+                                {
+                                    stoplichten[i].GetComponent<stoplichtBus>().b2 = 0;
+                                    stoplichten[i].GetComponent<stoplichtBus>().statusChanged = true;
+                                }
+                                else if (jobj["B1-2"].ToString() == "1" || Convert.ToInt32(jobj["B1-2"]) == 1)
+                                {
+                                    stoplichten[i].GetComponent<stoplichtBus>().b2 = 1;
+                                    stoplichten[i].GetComponent<stoplichtBus>().statusChanged = true;
+                                }
+                            }
+                            else if (jobj[stoplichten[i].name].ToString() == "0" || Convert.ToInt32(jobj[stoplichten[i].name]) == 0)
+                            {
+                                if (stoplichten[i].GetComponent<stoplicht>().statuss != 0)
                                 {
                                     //stoplicht.status = 0;
                                     //stoplicht.statusChanged = true;
-                                    stoplicht.StartCoroutine("changeToRed", 2f);
+                                    stoplichten[i].GetComponent<stoplicht>().StartCoroutine("changeToRed", 2f);
                                 }
                             }
                             else if (jobj[stoplichten[i].name].ToString() == "1" || Convert.ToInt32(jobj[stoplichten[i].name]) == 1)
                             {
-                                if (stoplicht.statuss != 1)
+                                if (stoplichten[i].GetComponent<stoplicht>().statuss != 1)
                                 {
                                     //stoplicht.status = 1;
                                     //stoplicht.statusChanged = true;
-                                    stoplicht.StartCoroutine("changeToGreen", 4f);
+                                    stoplichten[i].GetComponent<stoplicht>().StartCoroutine("changeToGreen", 4f);
                                 }
                             }
                         }

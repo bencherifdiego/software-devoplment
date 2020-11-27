@@ -6,12 +6,27 @@ public class carSpawner3 : MonoBehaviour
 {
     public GameObject car;
 
-    public float timer = 0.01f;
-    public float time = 0f;
+    
 
     public int hasCar = 0;
 
     public bool maySpawn;
+
+    public bool spawnCarB = true;
+
+    public float carTimer = 2f;
+    public float carTime = 0f;
+
+    public bool spawnBusB = false;
+
+    public float busTimer = 10f;
+    public float busTime = 0f;
+
+    public GameObject bus;
+
+    public int busPaths = 1;
+    public List<GameObject> busPath1 = new List<GameObject>();
+    public List<GameObject> busPath2 = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -24,17 +39,35 @@ public class carSpawner3 : MonoBehaviour
     {
         if (maySpawn)
         {
-            if (time <= 0)
+            if (spawnCarB)
             {
-                if (hasCar == 0)
+                if (carTime <= 0)
                 {
-                    StartCoroutine("spawnCar");
-                    time = timer;
+                    if (hasCar == 0)
+                    {
+                        StartCoroutine("spawnCar");
+                        carTime = carTimer;
+                    }
+                }
+                else
+                {
+                    carTime -= Time.deltaTime;
                 }
             }
-            else
+            if (spawnBusB)
             {
-                time -= Time.deltaTime;
+                if (busTime <= 0)
+                {
+                    if (hasCar == 0)
+                    {
+                        StartCoroutine("spawnBus");
+                        busTime = busTimer;
+                    }
+                }
+                else
+                {
+                    busTime -= Time.deltaTime;
+                }
             }
         }
     }
@@ -59,6 +92,34 @@ public class carSpawner3 : MonoBehaviour
                 else
                 {
                     Car.GetComponent<car2>().path = spawnpoint.path2;
+                }
+            }
+        }
+        yield return new WaitForSeconds(0f);
+    }
+
+    IEnumerator spawnBus()
+    {
+        if (hasCar == 0)
+        {
+            GameObject Car = Instantiate(bus, transform.position, transform.rotation);
+            if (busPaths == 1)
+            {
+                Car.GetComponent<bus>().name = "b1";
+                Car.GetComponent<bus>().path = busPath1;
+            }
+            else if (busPaths == 2)
+            {
+                int rnd = UnityEngine.Random.Range(0, 2);
+                if (rnd == 0)
+                {
+                    Car.GetComponent<bus>().name = "b1";
+                    Car.GetComponent<bus>().path = busPath1;
+                }
+                else
+                {
+                    Car.GetComponent<bus>().name = "b2";
+                    Car.GetComponent<bus>().path = busPath2;
                 }
             }
         }

@@ -6,6 +6,10 @@ TagManager:
   tags:
   - stop
   - detection
+  - spawnDetection
+  - detectionBus
+  - stopBus
+  - busStop
   layers:
   - Default
   - TransparentFX

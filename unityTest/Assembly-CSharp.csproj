@@ -63,6 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\bus.cs" />
+    <Compile Include="Assets\busSpawner.cs" />
     <Compile Include="Assets\car.cs" />
     <Compile Include="Assets\car2.cs" />
     <Compile Include="Assets\carSpawner.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Assets\SocketIO\WebsocketSharp\WebSocketStream.cs" />
     <Compile Include="Assets\spawnPoint.cs" />
     <Compile Include="Assets\stoplicht.cs" />
+    <Compile Include="Assets\stoplichtBus.cs" />
     <Compile Include="Assets\stoplichtManager.cs" />
     <None Include="Assets\SocketIO\JSONObject\readme.txt" />
     <None Include="Assets\SocketIO\Readme.txt" />
