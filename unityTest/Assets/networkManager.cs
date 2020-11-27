@@ -128,7 +128,7 @@ public class networkManager : MonoBehaviour
                                 {
                                     //stoplicht.status = 0;
                                     //stoplicht.statusChanged = true;
-                                    stoplichten[i].GetComponent<stoplicht>().StartCoroutine("changeToRed", 2f);
+                                    stoplichten[i].GetComponent<stoplicht>().StartCoroutine("changeToRed", 3f);
                                 }
                             }
                             else if (jobj[stoplichten[i].name].ToString() == "1" || Convert.ToInt32(jobj[stoplichten[i].name]) == 1)
@@ -137,7 +137,7 @@ public class networkManager : MonoBehaviour
                                 {
                                     //stoplicht.status = 1;
                                     //stoplicht.statusChanged = true;
-                                    stoplichten[i].GetComponent<stoplicht>().StartCoroutine("changeToGreen", 4f);
+                                    stoplichten[i].GetComponent<stoplicht>().StartCoroutine("changeToGreen", 0f);
                                 }
                             }
                         }
@@ -203,7 +203,10 @@ public class networkManager : MonoBehaviour
             {
                 if (sendToServer)
                 {
-                    sender.Send(Encoding.UTF8.GetBytes(formatHeader(jason.instance.jobj.ToString())));
+                    string message = jason.instance.jobj.ToString().Replace(" ", string.Empty);
+                    message = message.Replace("\n", string.Empty);
+                    Debug.Log(message);
+                    sender.Send(Encoding.UTF8.GetBytes(formatHeader(message)));
                 }
 
                 Thread.Sleep(1000);

@@ -18,13 +18,16 @@ while y == True:
 sleepTime = int(input("delay tussen messages? \n 1 is 1 seconde \n"))
 
 def formatHeader(y):
+    y = y.replace(" ", "")
     x = None
     x = str(len(str(y))) + ":" + str(y)
     x.replace(" ", "")
     return x
+jason = '{"A1-1":0,"A1-2":0,"A1-3":0,"B1-1":0,"B1-2":0,"F1-1":0,"F1-2":0,"V1-1":0,"V1-2":0,"V1-3":0,"V1-4":0,"A2-1":0,"A2-2":0,"A2-3":0,"A2-4":0,"F2-1":0,"F2-2":0,"V2-1":0,"V2-2":0,"V2-3":0,"V2-4":0,"A3-1":0,"A3-2":0,"A3-3":0,"A3-4":0,"A4-1":0,"A4-2":0,"A4-3":0,"A4-4":0,"B4-1":0,"F4-1":0,"F4-2":0,"V4-1":0,"V4-2":0,"V4-3":0,"V4-4":0,"A5-1":0,"A5-2":0,"A5-3":0,"A5-4":0,"F5-1":0,"F5-2":0,"V5-1":0,"V5-2":0,"V5-3":0,"V5-4":0,"A6-1":0,"A6-2":0,"A6-3":0,"A6-4":0}'
 
-with open('jason_controller.json') as file:
-    jason = json.load(file)
+jason = json.loads(jason)
+jasonRed = '{"A1-1":0,"A1-2":0,"A1-3":0,"B1-1":0,"B1-2":0,"F1-1":0,"F1-2":0,"V1-1":0,"V1-2":0,"V1-3":0,"V1-4":0,"A2-1":0,"A2-2":0,"A2-3":0,"A2-4":0,"F2-1":0,"F2-2":0,"V2-1":0,"V2-2":0,"V2-3":0,"V2-4":0,"A3-1":0,"A3-2":0,"A3-3":0,"A3-4":0,"A4-1":0,"A4-2":0,"A4-3":0,"A4-4":0,"B4-1":0,"F4-1":0,"F4-2":0,"V4-1":0,"V4-2":0,"V4-3":0,"V4-4":0,"A5-1":0,"A5-2":0,"A5-3":0,"A5-4":0,"F5-1":0,"F5-2":0,"V5-1":0,"V5-2":0,"V5-3":0,"V5-4":0,"A6-1":0,"A6-2":0,"A6-3":0,"A6-4":0}'
+
 
 host = '127.0.0.1'
 port = 54000
@@ -675,14 +678,21 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         thread1.start()
         while True:
             if receiveFromClient == "y":
-                    z = json.dumps(jason)
+                Red = jasonRed
+                messageRed = Red.replace("\\", "")
+                messageRed = formatHeader(messageRed)
+                print(messageRed)
+                conn.sendall(messageRed.encode("utf-8"))
+                print("sent all red")
+                time.sleep(10)
+                print("test")
 
-                    message = formatHeader(z)
-
-                    conn.sendall(message.encode("utf-8"))
-                    print(time.strftime("%H:%M:%S", time.localtime()), " : message sent")
-
-                    time.sleep(sleepTime)
+                z = json.dumps(jason)
+                message = z.replace("\\", "")
+                message = formatHeader(message)
+                conn.sendall(message.encode("utf-8"))
+                print(time.strftime("%H:%M:%S", time.localtime()), " : message sent")
+                time.sleep(sleepTime)
             else:
 
                 groepAllRed()

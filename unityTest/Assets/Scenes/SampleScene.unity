@@ -3748,8 +3748,7 @@ MonoBehaviour:
   - {fileID: 1753357039}
   - {fileID: 1599384634}
   - {fileID: 2015213187}
-  busSpawns:
-  - {fileID: 123896828}
+  busSpawns: []
   spawnDelay: 2
   busSpawnDelay: 15
 --- !u!4 &553929450
@@ -3777,6 +3776,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Bus
+      objectReference: {fileID: 0}
+    - target: {fileID: 1978173751548229486, guid: 9f768f95affe8684198b32318d5d8d87,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1978173751548229484, guid: 9f768f95affe8684198b32318d5d8d87,
         type: 3}

@@ -1,7 +1,7 @@
 import socket
 import json
 import time
-
+import threading    
 import random
 
 y = True
@@ -18,20 +18,21 @@ while y == True:
 sleepTime = int(input("delay tussen messages? \n 1 is 1 seconde \n"))
 
 def formatHeader(y):
+    y = y.replace(" ", "")
     x = None
     x = str(len(str(y))) + ":" + str(y)
     x.replace(" ", "")
     return x
+jason = '{"A1-1":0,"A1-2":0,"A1-3":0,"B1-1":0,"B1-2":0,"F1-1":0,"F1-2":0,"V1-1":0,"V1-2":0,"V1-3":0,"V1-4":0,"A2-1":0,"A2-2":0,"A2-3":0,"A2-4":0,"F2-1":0,"F2-2":0,"V2-1":0,"V2-2":0,"V2-3":0,"V2-4":0,"A3-1":0,"A3-2":0,"A3-3":0,"A3-4":0,"A4-1":0,"A4-2":0,"A4-3":0,"A4-4":0,"B4-1":0,"F4-1":0,"F4-2":0,"V4-1":0,"V4-2":0,"V4-3":0,"V4-4":0,"A5-1":0,"A5-2":0,"A5-3":0,"A5-4":0,"F5-1":0,"F5-2":0,"V5-1":0,"V5-2":0,"V5-3":0,"V5-4":0,"A6-1":0,"A6-2":0,"A6-3":0,"A6-4":0}'
 
-with open('jason_controller.json') as file:
-    jason = json.load(file)
+jason = json.loads(jason)
+jasonRed = '{"A1-1":0,"A1-2":0,"A1-3":0,"B1-1":0,"B1-2":0,"F1-1":0,"F1-2":0,"V1-1":0,"V1-2":0,"V1-3":0,"V1-4":0,"A2-1":0,"A2-2":0,"A2-3":0,"A2-4":0,"F2-1":0,"F2-2":0,"V2-1":0,"V2-2":0,"V2-3":0,"V2-4":0,"A3-1":0,"A3-2":0,"A3-3":0,"A3-4":0,"A4-1":0,"A4-2":0,"A4-3":0,"A4-4":0,"B4-1":0,"F4-1":0,"F4-2":0,"V4-1":0,"V4-2":0,"V4-3":0,"V4-4":0,"A5-1":0,"A5-2":0,"A5-3":0,"A5-4":0,"F5-1":0,"F5-2":0,"V5-1":0,"V5-2":0,"V5-3":0,"V5-4":0,"A6-1":0,"A6-2":0,"A6-3":0,"A6-4":0}'
 
-jsonSimulator = None
 
 host = '127.0.0.1'
 port = 54000
 
-def receiveFromSimulator():
+def receiveFromSimulator(jsonSimulator):
     #car
     Group01A_array = ["A1-1", "A1-2", "A3-1", "A3-2", "A3-3", "A3-4"]
     Group01B_array = ["A1-1", "A1-2", "A2-1", "A2-2", "A3-3", "A4-4"]
@@ -63,7 +64,7 @@ def receiveFromSimulator():
 
     for x in jsonSimulator :
         if(jsonSimulator[x] == 1):
-            print(x)
+            #print(x)
             TrafficLightsThatHasCarsEast.append(x)
             
     resultsEast = []
@@ -137,7 +138,7 @@ def receiveFromSimulator():
                 count += 1
 
         amountOfTrafficlightMatchesWest[i].append(count)
-    print(amountOfTrafficlightMatchesWest)
+    #print(amountOfTrafficlightMatchesWest)
 
     highestAmountOfMatchesGroupNameEast = ""
     highestAmountOfMatchesNumberEast = 0
@@ -146,7 +147,7 @@ def receiveFromSimulator():
             highestAmountOfMatchesNumberEast = amountOfTrafficlightMatchesEast[i][1]
             highestAmountOfMatchesGroupNameEast = amountOfTrafficlightMatchesEast[i][0]
 
-    print(highestAmountOfMatchesGroupNameEast)
+    #print(highestAmountOfMatchesGroupNameEast)
     groepAllRed()
     if(highestAmountOfMatchesGroupNameEast == "groep01A"):
         Group01A()
@@ -168,8 +169,6 @@ def receiveFromSimulator():
         GroupB01B()
     elif(highestAmountOfMatchesGroupNameEast == "groepB02"):
         GroupB02()
-    else:
-        print("nothing")
 
     highestAmountOfMatchesGroupNameWest = ""
     highestAmountOfMatchesNumberWest = 0
@@ -178,7 +177,7 @@ def receiveFromSimulator():
             highestAmountOfMatchesNumberWest = amountOfTrafficlightMatchesWest[i][1]
             highestAmountOfMatchesGroupNameWest = amountOfTrafficlightMatchesWest[i][0]
 
-    print(highestAmountOfMatchesGroupNameWest)
+    #print(highestAmountOfMatchesGroupNameWest)
 
     if(highestAmountOfMatchesGroupNameWest == "groepW1A"):
         GroupW1A()
@@ -198,8 +197,6 @@ def receiveFromSimulator():
         GroupBW1B()
     elif (highestAmountOfMatchesGroupNameWest == "groepBW1C"):
         GroupBW1C()
-    else:
-        print("nothing")
 
 def Group01A():
     jason["A1-1"] = 1
@@ -215,7 +212,7 @@ def Group01B():
     jason["A2-1"] = 1
     jason["A2-2"] = 1
     jason["A3-3"] = 1
-    jason["A4-4"] = 1
+    jason["A3-4"] = 1
 
 def Group01C():
     jason["A1-1"] = 1
@@ -652,6 +649,24 @@ def groepW3A1():
     jason["A6-3"] = "0"
     jason["A6-4"] = "0"
 
+class myThread (threading.Thread):
+    def __init__(self, threadID):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+    def run(self):
+        while True:
+            data = conn.recv(1024)
+            print(time.strftime("%H:%M:%S", time.localtime()), " : message received")
+            data = data.decode("utf-8")
+            splittedData = data.split(":", 1)
+            if (len(splittedData[1]) == int(splittedData[0])):
+                print(time.strftime("%H:%M:%S", time.localtime()), " : json correct length")
+                jsonSimulator = json.loads(splittedData[1])
+                if (jsonSimulator != None):
+                    receiveFromSimulator(jsonSimulator)  
+            else:
+                print(time.strftime("%H:%M:%S", time.localtime()), " : json incorrect length")  
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     sock.bind((host, port))
     sock.listen()
@@ -659,23 +674,25 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     conn, addr = sock.accept()
     with conn:
         print('Connected by: ', addr)
+        thread1 = myThread(1)
+        thread1.start()
         while True:
             if receiveFromClient == "y":
-                data = conn.recv(1024)
-                data = data.decode("utf-8")
-                splittedData = data.split(":", 1)
-                if (len(splittedData[1]) == int(splittedData[0])):
-                    jsonSimulator = json.loads(splittedData[1])
-                    
-                    receiveFromSimulator()
+                Red = jasonRed
+                messageRed = Red.replace("\\", "")
+                messageRed = formatHeader(messageRed)
+                print(messageRed)
+                conn.sendall(messageRed.encode("utf-8"))
+                print("sent all red")
+                time.sleep(10)
+                print("test")
 
-                    z = json.dumps(jason)
-
-                    message = formatHeader(z)
-
-                    conn.sendall(message.encode("utf-8"))
-
-                    time.sleep(sleepTime)
+                z = json.dumps(jason)
+                message = z.replace("\\", "")
+                message = formatHeader(message)
+                conn.sendall(message.encode("utf-8"))
+                print(time.strftime("%H:%M:%S", time.localtime()), " : message sent")
+                time.sleep(sleepTime)
             else:
 
                 groepAllRed()
