@@ -76,7 +76,7 @@ def groepAllRed():
     jason["A6-3"] = "0"
     jason["A6-4"] = "0"
 
-def groepO1A():
+def groepO1A1():
     jason["A1-1"] = "1"
     jason["A1-2"] = "1"
     jason["A1-3"] = "0"
@@ -101,7 +101,7 @@ def groepO1A():
     jason["A6-3"] = "0"
     jason["A6-4"] = "0"
 
-def groepO1B():
+def groepO1B1():
     jason["A1-1"] = "1"
     jason["A1-2"] = "1"
     jason["A1-3"] = "0"
@@ -126,7 +126,7 @@ def groepO1B():
     jason["A6-3"] = "0"
     jason["A6-4"] = "0"
 
-def groepO1C():
+def groepO1C1():
     jason["A1-1"] = "1"
     jason["A1-2"] = "1"
     jason["A1-3"] = "1"
@@ -151,7 +151,7 @@ def groepO1C():
     jason["A6-3"] = "0"
     jason["A6-4"] = "0"
 
-def groepO3A():
+def groepO3A1():
     jason["A1-1"] = "0"
     jason["A1-2"] = "0"
     jason["A1-3"] = "0"
@@ -176,7 +176,7 @@ def groepO3A():
     jason["A6-3"] = "0"
     jason["A6-4"] = "0"
 
-def groepO3C():
+def groepO3C1():
     jason["A1-1"] = "1"
     jason["A1-2"] = "1"
     jason["A1-3"] = "0"
@@ -201,7 +201,7 @@ def groepO3C():
     jason["A6-3"] = "0"
     jason["A6-4"] = "0"
 
-def groepW1A():
+def groepW1A1():
     jason["A1-1"] = "0"
     jason["A1-2"] = "0"
     jason["A1-3"] = "0"
@@ -226,7 +226,7 @@ def groepW1A():
     jason["A6-3"] = "0"
     jason["A6-4"] = "0"
 
-def groepW2A():
+def groepW2A1():
     jason["A1-1"] = "0"
     jason["A1-2"] = "0"
     jason["A1-3"] = "0"
@@ -251,7 +251,7 @@ def groepW2A():
     jason["A6-3"] = "0"
     jason["A6-4"] = "0"
 
-def groepW2B():
+def groepW2B1():
     jason["A1-1"] = "0"
     jason["A1-2"] = "0"
     jason["A1-3"] = "0"
@@ -276,7 +276,7 @@ def groepW2B():
     jason["A6-3"] = "1"
     jason["A6-4"] = "1"
 
-def groepW3A():
+def groepW3A1():
     jason["A1-1"] = "0"
     jason["A1-2"] = "0"
     jason["A1-3"] = "0"

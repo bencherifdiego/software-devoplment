@@ -6,7 +6,7 @@ public class carSpawner3 : MonoBehaviour
 {
     public GameObject car;
 
-    
+    public GameObject lastSpawned;
 
     public int hasCar = 0;
 
@@ -76,23 +76,36 @@ public class carSpawner3 : MonoBehaviour
     {
         if (hasCar == 0)
         {
-            GameObject Car = Instantiate(car, transform.position, transform.rotation);
-            spawnPoint spawnpoint = GetComponent<spawnPoint>();
-            if (spawnpoint.numPaths == 1)
+            float dist;
+            if (lastSpawned == null)
             {
-                Car.GetComponent<car2>().path = spawnpoint.path1;
+                dist = 5;
             }
-            else if (spawnpoint.numPaths == 2)
+            else
             {
-                int rnd = UnityEngine.Random.Range(0, 2);
-                if (rnd == 0)
+                dist = Vector3.Distance(lastSpawned.transform.position, transform.position);
+            }
+            if (dist >= 2)
+            {
+                GameObject Car = Instantiate(car, transform.position, transform.rotation);
+                spawnPoint spawnpoint = GetComponent<spawnPoint>();
+                if (spawnpoint.numPaths == 1)
                 {
                     Car.GetComponent<car2>().path = spawnpoint.path1;
                 }
-                else
+                else if (spawnpoint.numPaths == 2)
                 {
-                    Car.GetComponent<car2>().path = spawnpoint.path2;
+                    int rnd = UnityEngine.Random.Range(0, 2);
+                    if (rnd == 0)
+                    {
+                        Car.GetComponent<car2>().path = spawnpoint.path1;
+                    }
+                    else
+                    {
+                        Car.GetComponent<car2>().path = spawnpoint.path2;
+                    }
                 }
+                lastSpawned = Car;
             }
         }
         yield return new WaitForSeconds(0f);
@@ -102,24 +115,36 @@ public class carSpawner3 : MonoBehaviour
     {
         if (hasCar == 0)
         {
-            GameObject Car = Instantiate(bus, transform.position, transform.rotation);
-            if (busPaths == 1)
+            float dist;
+            if (lastSpawned == null)
             {
-                Car.GetComponent<bus>().name = "b1";
-                Car.GetComponent<bus>().path = busPath1;
+                dist = 5;
             }
-            else if (busPaths == 2)
+            else
             {
-                int rnd = UnityEngine.Random.Range(0, 2);
-                if (rnd == 0)
+                dist = Vector3.Distance(lastSpawned.transform.position, transform.position);
+            }
+            if (dist >= 2)
+            {
+                GameObject Car = Instantiate(bus, transform.position, transform.rotation);
+                if (busPaths == 1)
                 {
                     Car.GetComponent<bus>().name = "b1";
                     Car.GetComponent<bus>().path = busPath1;
                 }
-                else
+                else if (busPaths == 2)
                 {
-                    Car.GetComponent<bus>().name = "b2";
-                    Car.GetComponent<bus>().path = busPath2;
+                    int rnd = UnityEngine.Random.Range(0, 2);
+                    if (rnd == 0)
+                    {
+                        Car.GetComponent<bus>().name = "b1";
+                        Car.GetComponent<bus>().path = busPath1;
+                    }
+                    else
+                    {
+                        Car.GetComponent<bus>().name = "b2";
+                        Car.GetComponent<bus>().path = busPath2;
+                    }
                 }
             }
         }

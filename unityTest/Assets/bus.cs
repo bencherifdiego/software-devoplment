@@ -83,30 +83,40 @@ public class bus : MonoBehaviour
         }
         else if (other.tag == "busStop")
         {
-            if (name == "b1")
+            if (other.GetComponentInParent<stoplichtBus>().currentBus == this.gameObject)
             {
-                int status = other.GetComponentInParent<stoplichtBus>().b1;
+                if (name == "b1")
+                {
+                    int status = other.GetComponentInParent<stoplichtBus>().b1;
 
-                if (status == 0)
-                {
-                    mayMove = false;
+                    if (status == 0)
+                    {
+                        mayMove = false;
+                    }
+                    else if (status == 1)
+                    {
+                        mayMove = true;
+                    }
                 }
-                else if (status == 1)
+                else if (name == "b2")
                 {
-                    mayMove = true;
+                    int status = other.GetComponentInParent<stoplichtBus>().b2;
+
+                    if (status == 0)
+                    {
+                        mayMove = false;
+                    }
+                    else if (status == 1)
+                    {
+                        mayMove = true;
+                    }
                 }
             }
-            else if (name == "b2")
+            else
             {
-                int status = other.GetComponentInParent<stoplichtBus>().b2;
-
-                if (status == 0)
+                if (other.GetComponentInParent<stoplichtBus>().currentBus == null)
                 {
-                    mayMove = false;
-                }
-                else if (status == 1)
-                {
-                    mayMove = true;
+                    other.GetComponentInParent<stoplichtBus>().currentBus = this.gameObject;
                 }
             }
         }
@@ -149,6 +159,7 @@ public class bus : MonoBehaviour
             {
                 other.GetComponentInParent<stoplichtBus>().hasb2 = 0;
             }
+            other.GetComponentInParent<stoplichtBus>().currentBus = null;
         }
         else if (other.tag == "spawnDetection")
         {

@@ -203,10 +203,14 @@ public class networkManager : MonoBehaviour
             {
                 if (sendToServer)
                 {
-                    string message = jason.instance.jobj.ToString().Replace(" ", string.Empty);
+                    string message = jason.instance.jobj.ToString();
+                    message = message.Replace(" ", string.Empty);
                     message = message.Replace("\n", string.Empty);
-                    Debug.Log(message);
-                    sender.Send(Encoding.UTF8.GetBytes(formatHeader(message)));
+                    message = message.Replace("\r", string.Empty);
+                    message = message.Replace("\\", string.Empty);
+                    string formattedMessage = formatHeader(message);
+                    Debug.Log(formattedMessage);
+                    sender.Send(Encoding.UTF8.GetBytes(formattedMessage));
                 }
 
                 Thread.Sleep(1000);

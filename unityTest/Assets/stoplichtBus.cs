@@ -15,6 +15,8 @@ public class stoplichtBus : MonoBehaviour
     public Material red;
     public Material orange;
 
+    public GameObject currentBus;
+
     public int b1 = 0;
     public int b2 = 0;
 

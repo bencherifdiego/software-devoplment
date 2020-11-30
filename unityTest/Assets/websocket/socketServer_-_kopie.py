@@ -658,10 +658,14 @@ class myThread (threading.Thread):
             data = conn.recv(1024)
             print(time.strftime("%H:%M:%S", time.localtime()), " : message received")
             data = data.decode("utf-8")
+            print(data)
+            print(time.strftime("%H:%M:%S", time.localtime()), data)
             splittedData = data.split(":", 1)
             if (len(splittedData[1]) == int(splittedData[0])):
+                print(splittedData[1])
                 print(time.strftime("%H:%M:%S", time.localtime()), " : json correct length")
                 jsonSimulator = json.loads(splittedData[1])
+                print (jsonSimulator)
                 if (jsonSimulator != None):
                     receiveFromSimulator(jsonSimulator)  
             else:
