@@ -31,7 +31,16 @@ jasonRed = '{"A1-1":0,"A1-2":0,"A1-3":0,"B1-1":0,"B1-2":0,"F1-1":0,"F1-2":0,"V1-
 host = '127.0.0.1'
 port = 54000
 
+arrayGroupHasBeenUsedEast = []
+arrayGroupHasBeenUsedWest = []
+
 def receiveFromSimulator(jsonSimulator):
+    if(len(arrayGroupHasBeenUsedWest) > 3):
+        arrayGroupHasBeenUsedWest.pop(0)
+
+    if(len(arrayGroupHasBeenUsedEast) > 3):
+        arrayGroupHasBeenUsedEast.pop(0)
+
     #car
     Group01A_array = ["A1-1", "A1-2", "A3-1", "A3-2", "A3-3", "A3-4"]
     Group01B_array = ["A1-1", "A1-2", "A2-1", "A2-2", "A3-3", "A4-4"]
@@ -57,12 +66,11 @@ def receiveFromSimulator(jsonSimulator):
     GroupBW1B_array = ["A5-3", "A5-4", "A6-1", "A6-2", "B4-1"]
     GroupBW1C_array = ["A6-1", "A6-2", "A6-3", "A6-4", "B4-1"]
     
-    TrafficLightsThatHasCarsEast = []
-
+    TrafficLightsThatHasCars = []
     for x in jsonSimulator :
         if(jsonSimulator[x] == 1):
-            TrafficLightsThatHasCarsEast.append(x)
-            
+            TrafficLightsThatHasCars.append(x)
+
     resultsEast = []
     resultsWest = []
     amountOfTrafficlightMatchesEast = []
@@ -72,7 +80,11 @@ def receiveFromSimulator(jsonSimulator):
         resultsEast.append([])
         amountOfTrafficlightMatchesEast.append([])
 
-    for i in TrafficLightsThatHasCarsEast:
+    for i in range(9):
+        resultsWest.append([])
+        amountOfTrafficlightMatchesWest.append([])
+
+    for i in TrafficLightsThatHasCars:
         resultsEast[0].append(Group01A_array.count(i))
         resultsEast[1].append(Group01B_array.count(i))
         resultsEast[2].append(Group01C_array.count(i))
@@ -83,7 +95,16 @@ def receiveFromSimulator(jsonSimulator):
         resultsEast[7].append(GroupB01A_array.count(i))
         resultsEast[8].append(GroupB01B_array.count(i))
         resultsEast[9].append(GroupB02_array.count(i))
-    
+        resultsWest[0].append(GroupW1A_array.count(i))
+        resultsWest[1].append(GroupW2A_array.count(i))
+        resultsWest[2].append(GroupW2B_array.count(i))
+        resultsWest[3].append(GroupW3A_array.count(i))
+        resultsWest[4].append(GroupFVW1_array.count(i))
+        resultsWest[5].append(GroupFVW2_array.count(i))
+        resultsWest[6].append(GroupBW1A_array.count(i))
+        resultsWest[7].append(GroupBW1B_array.count(i))
+        resultsWest[8].append(GroupBW1C_array.count(i))
+
     amountOfTrafficlightMatchesEast[0].append("groep01A")
     amountOfTrafficlightMatchesEast[0].append(len(Group01A_array))
     amountOfTrafficlightMatchesEast[1].append("groep01B")
@@ -104,28 +125,6 @@ def receiveFromSimulator(jsonSimulator):
     amountOfTrafficlightMatchesEast[8].append(len(GroupB01B_array))
     amountOfTrafficlightMatchesEast[9].append("groepB02")
     amountOfTrafficlightMatchesEast[9].append(len(GroupB02_array))
-    for i in range(10):
-        count = 0
-        for j in resultsEast[i]:
-            if(j == 1):
-                count += 1
-        amountOfTrafficlightMatchesEast[i].append(count)
-
-    for i in range(9):
-        resultsWest.append([])
-        amountOfTrafficlightMatchesWest.append([])
-
-    for i in TrafficLightsThatHasCarsEast:
-        resultsWest[0].append(GroupW1A_array.count(i))
-        resultsWest[1].append(GroupW2A_array.count(i))
-        resultsWest[2].append(GroupW2B_array.count(i))
-        resultsWest[3].append(GroupW3A_array.count(i))
-        resultsWest[4].append(GroupFVW1_array.count(i))
-        resultsWest[5].append(GroupFVW2_array.count(i))
-        resultsWest[6].append(GroupBW1A_array.count(i))
-        resultsWest[7].append(GroupBW1B_array.count(i))
-        resultsWest[8].append(GroupBW1C_array.count(i))
-    
     amountOfTrafficlightMatchesWest[0].append("groepW1A")
     amountOfTrafficlightMatchesWest[0].append(len(GroupW1A_array))
     amountOfTrafficlightMatchesWest[1].append("groepW2A")
@@ -145,6 +144,13 @@ def receiveFromSimulator(jsonSimulator):
     amountOfTrafficlightMatchesWest[8].append("groepBW1C")
     amountOfTrafficlightMatchesWest[8].append(len(GroupBW1C_array))
 
+    for i in range(10):
+        count = 0
+        for j in resultsEast[i]:
+            if(j == 1):
+                count += 1
+        amountOfTrafficlightMatchesEast[i].append(count)
+
     for i in range(9):
         count = 0
         for j in resultsWest[i]:
@@ -156,29 +162,58 @@ def receiveFromSimulator(jsonSimulator):
     highestAmountOfMatchesNumberEast = 0
     setBusEast = False
 
+    highestAmountOfMatchesGroupNameWest = ""
+    highestAmountOfMatchesNumberWest = 0
+    setBusWest = False
+
     groepAllRed()
     
+    busEastIsSet = False
     for s in jsonSimulator:
+        if(busEastIsSet == False):
             if(s == "B1-1"):
                 if(jsonSimulator[s] > 0):
                     randomChooseGroup = random.randint(0,1)
                     if(randomChooseGroup > 0):
-                       GroupB01A()
-                       setBusEast = True
+                        GroupB01A()
+                        setBusEast = True
                     else:
                         GroupB01B()
                         setBusEast = True
+                    busEastIsSet = True
             elif(s == "B1-2"):
                 if(jsonSimulator[s] > 0):
                     GroupB02()
                     setBusEast = True
-        
+                    found = True
+
+    for s in jsonSimulator:
+        if(s == "B4-1"):
+            if(jsonSimulator[s] > 0):
+                randomChooseGroup = random.randint(0,2)
+                if(randomChooseGroup == 0):
+                    GroupBW1A()
+                    setBusWest = True
+                elif(randomChooseGroup == 1):
+                    GroupBW1B()
+                    setBusWest = True
+                elif(randomChooseGroup == 2):
+                    GroupBW1C()
+                    setBusWest = True
+
+
     for i in range(len(amountOfTrafficlightMatchesEast)):
-        if((amountOfTrafficlightMatchesEast[i][2] / amountOfTrafficlightMatchesEast[i][1]) > highestAmountOfMatchesNumberEast and amountOfTrafficlightMatchesEast[i][0] != highestAmountOfMatchesGroupNameEast):
+        if((amountOfTrafficlightMatchesEast[i][2] / amountOfTrafficlightMatchesEast[i][1]) > highestAmountOfMatchesNumberEast and amountOfTrafficlightMatchesEast[i][0] not in arrayGroupHasBeenUsedEast):
             highestAmountOfMatchesNumberEast = (amountOfTrafficlightMatchesEast[i][2] / amountOfTrafficlightMatchesEast[i][1])
             highestAmountOfMatchesGroupNameEast = amountOfTrafficlightMatchesEast[i][0]
-            
+    
+    for i in range(len(amountOfTrafficlightMatchesWest)):
+        if((amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1]) > highestAmountOfMatchesNumberWest and amountOfTrafficlightMatchesWest[i][0] not in arrayGroupHasBeenUsedWest):
+            highestAmountOfMatchesNumberWest = (amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1])
+            highestAmountOfMatchesGroupNameWest = amountOfTrafficlightMatchesWest[i][0]
+
     if(setBusEast == False):
+        arrayGroupHasBeenUsedEast.append(highestAmountOfMatchesGroupNameEast)
         if(highestAmountOfMatchesGroupNameEast == "groep01A"):
             Group01A()
         elif(highestAmountOfMatchesGroupNameEast == "groep01B"):
@@ -200,29 +235,8 @@ def receiveFromSimulator(jsonSimulator):
         elif(highestAmountOfMatchesGroupNameEast == "groepB02"):
             GroupB02()
 
-    highestAmountOfMatchesGroupNameWest = ""
-    highestAmountOfMatchesNumberWest = 0
-    setBusWest = False
-    for s in jsonSimulator:
-            if(s == "B4-1"):
-                if(jsonSimulator[s] > 0):
-                    randomChooseGroup = random.randint(0,2)
-                    if(randomChooseGroup == 0):
-                       GroupBW1A()
-                       setBusWest = True
-                    elif(randomChooseGroup == 1):
-                        GroupBW1B()
-                        setBusWest = True
-                    elif(randomChooseGroup == 2):
-                        GroupBW1C()
-                        setBusWest = True
-    
-    for i in range(len(amountOfTrafficlightMatchesWest)):
-        if((amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1]) > highestAmountOfMatchesNumberWest and amountOfTrafficlightMatchesWest[i][0] != highestAmountOfMatchesGroupNameWest):
-            highestAmountOfMatchesNumberWest = (amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1])
-            highestAmountOfMatchesGroupNameWest = amountOfTrafficlightMatchesWest[i][0]
-
     if(setBusWest == False):
+        arrayGroupHasBeenUsedWest.append(highestAmountOfMatchesGroupNameWest)
         if(highestAmountOfMatchesGroupNameWest == "groepW1A"):
             GroupW1A()
         elif(highestAmountOfMatchesGroupNameWest == "groepW2A"):
@@ -692,6 +706,20 @@ def groepW3A1():
     jason["A6-2"] = "1"
     jason["A6-3"] = "0"
     jason["A6-4"] = "0"
+
+#jasonTest = '{"A1-1":0,"A1-2":0,"A1-3":0,"B1-1":0,"B1-2":0,"F1-1":0,"F1-2":0,"V1-1":0,"V1-2":0,"V1-3":0,"V1-4":0,"A2-1":0,"A2-2":0,"A2-3":0,"A2-4":0,"F2-1":0,"F2-2":0,"V2-1":0,"V2-2":0,"V2-3":0,"V2-4":0,"A3-1":0,"A3-2":0,"A3-3":0,"A3-4":0,"A4-1":0,"A4-2":0,"A4-3":0,"A4-4":0,"B4-1":0,"F4-1":0,"F4-2":0,"V4-1":0,"V4-2":0,"V4-3":0,"V4-4":0,"A5-1":0,"A5-2":0,"A5-3":0,"A5-4":0,"F5-1":0,"F5-2":0,"V5-1":0,"V5-2":0,"V5-3":0,"V5-4":0,"A6-1":0,"A6-2":0,"A6-3":0,"A6-4":0}'
+#jasonTest = json.loads(jasonTest)
+
+
+#for i in range(30):
+    #print(i)
+
+    #for i in jasonTest:
+        #jasonTest[i] = random.randint(0,1)
+
+    #receiveFromSimulator(jasonTest)
+    #time.sleep(2)
+
 
 class myThread (threading.Thread):
     def __init__(self, threadID):
