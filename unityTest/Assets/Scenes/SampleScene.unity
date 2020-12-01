@@ -3958,8 +3958,8 @@ MonoBehaviour:
   - {fileID: 1923516685}
   - {fileID: 2015213187}
   - {fileID: 19636601}
-  spawnDelay: 2
-  busSpawnDelay: 15
+  spawnDelay: 0.5
+  busSpawnDelay: 5
   carMaySpawn: 0
   busMaySpawn: 0
 --- !u!4 &553929450
