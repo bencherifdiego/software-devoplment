@@ -688,8 +688,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
                 print(messageRed)
                 conn.sendall(messageRed.encode("utf-8"))
                 print("sent all red")
-                time.sleep(10)
-                print("test")
+                time.sleep(5)
 
                 z = json.dumps(jason)
                 message = z.replace("\\", "")
