@@ -286,7 +286,7 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>F:/School/jaar 3/software development/software-devoplment/unityTest/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
+      <HintPath>F:/School/jaar 3/software development/software-devoplment/unityTest/Assets/materials/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>F:/School/jaar 3/software development/software-devoplment/unityTest/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>

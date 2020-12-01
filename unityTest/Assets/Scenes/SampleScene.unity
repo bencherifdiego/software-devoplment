@@ -3960,8 +3960,8 @@ MonoBehaviour:
   - {fileID: 19636601}
   spawnDelay: 0.5
   busSpawnDelay: 5
-  carMaySpawn: 0
-  busMaySpawn: 0
+  carMaySpawn: 1
+  busMaySpawn: 1
 --- !u!4 &553929450
 Transform:
   m_ObjectHideFlags: 0

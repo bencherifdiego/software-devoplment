@@ -1,6 +1,7 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - bus
     - car2
     - carSpawnManager
     - carSpawner2
@@ -9,6 +10,7 @@ ScriptsOnlyBuild:
     - networkManager
     - spawnPoint
     - stoplicht
+    - stoplichtBus
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
@@ -47,21 +49,25 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9928}
     - Class: 114
-      Script: {instanceID: 10178}
+      Script: {instanceID: 10180}
     - Class: 114
-      Script: {instanceID: 10394}
+      Script: {instanceID: 10396}
     - Class: 114
-      Script: {instanceID: 10742}
+      Script: {instanceID: 10744}
     - Class: 114
-      Script: {instanceID: 10774}
+      Script: {instanceID: 10776}
     - Class: 114
-      Script: {instanceID: 11038}
+      Script: {instanceID: 11040}
     - Class: 114
-      Script: {instanceID: 11262}
+      Script: {instanceID: 11264}
     - Class: 114
-      Script: {instanceID: 11498}
+      Script: {instanceID: 11304}
     - Class: 114
-      Script: {instanceID: 12514}
+      Script: {instanceID: 11502}
+    - Class: 114
+      Script: {instanceID: 11600}
+    - Class: 114
+      Script: {instanceID: 25656}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 157
@@ -161,7 +167,7 @@ ScriptsOnlyBuild:
     className: TMP_InputField
   - hash:
       serializedVersion: 2
-      Hash: d2fdeb5f537d0a8d21e6155716edb918
+      Hash: 0fc7ebc974f8c503603683af353ead83
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: stoplicht
@@ -183,6 +189,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalAsset
+  - hash:
+      serializedVersion: 2
+      Hash: 4a4a8adc3d638e6332e5dc8b193abb57
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: busSpawner
   - hash:
       serializedVersion: 2
       Hash: 0dbc3be398b4869a5c8d0d8481ee402c
@@ -281,7 +293,7 @@ ScriptsOnlyBuild:
     className: carSpawner
   - hash:
       serializedVersion: 2
-      Hash: c758c312b72bcaf388bb409d8ff15748
+      Hash: 746536a7b1d5b009bf8d31433312720d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: carSpawnManager
@@ -467,6 +479,12 @@ ScriptsOnlyBuild:
     className: MarkerTrack
   - hash:
       serializedVersion: 2
+      Hash: b104b158a8a20ee6ca61af61796ba0a6
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: stoplichtBus
+  - hash:
+      serializedVersion: 2
       Hash: d791aa6007fa3640be1164ea75bb087d
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -515,7 +533,7 @@ ScriptsOnlyBuild:
     className: TMP_SubMesh
   - hash:
       serializedVersion: 2
-      Hash: 4a4a8adc3d638e6332e5dc8b193abb57
+      Hash: 539811102f27805835cfdc05f3d953bc
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: carSpawner3
@@ -569,6 +587,12 @@ ScriptsOnlyBuild:
     className: ToggleGroup
   - hash:
       serializedVersion: 2
+      Hash: 57eb5786531ba9fd79109f223ffc52b1
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: bus
+  - hash:
+      serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -576,5 +600,4 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: F:/School/jaar 3/software development/software-devoplment/builds/testing/simulator
-    die wel naar controller stuurt/unityTest.exe
+  playerPath: F:/School/jaar 3/software development/software-devoplment/build/unityTest.exe

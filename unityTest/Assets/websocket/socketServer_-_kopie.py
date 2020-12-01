@@ -127,14 +127,23 @@ def receiveFromSimulator(jsonSimulator):
         resultsWest[8].append(GroupBW1C_array.count(i))
     
     amountOfTrafficlightMatchesWest[0].append("groepW1A")
+    amountOfTrafficlightMatchesWest[0].append(len(GroupW1A_array))
     amountOfTrafficlightMatchesWest[1].append("groepW2A")
+    amountOfTrafficlightMatchesWest[1].append(len(GroupW2A_array))
     amountOfTrafficlightMatchesWest[2].append("groepW2B")
+    amountOfTrafficlightMatchesWest[2].append(len(GroupW2B_array))
     amountOfTrafficlightMatchesWest[3].append("groepW3A")
+    amountOfTrafficlightMatchesWest[3].append(len(GroupW3A_array))
     amountOfTrafficlightMatchesWest[4].append("groepFVW1")
+    amountOfTrafficlightMatchesWest[4].append(len(GroupFVW1_array))
     amountOfTrafficlightMatchesWest[5].append("groepFVW2")
+    amountOfTrafficlightMatchesWest[5].append(len(GroupFVW2_array))
     amountOfTrafficlightMatchesWest[6].append("groepBW1A")
+    amountOfTrafficlightMatchesWest[6].append(len(GroupBW1A_array))
     amountOfTrafficlightMatchesWest[7].append("groepBW1B")
+    amountOfTrafficlightMatchesWest[7].append(len(GroupBW1B_array))
     amountOfTrafficlightMatchesWest[8].append("groepBW1C")
+    amountOfTrafficlightMatchesWest[8].append(len(GroupBW1C_array))
 
     for i in range(9):
         count = 0
@@ -165,7 +174,7 @@ def receiveFromSimulator(jsonSimulator):
                     setBusEast = True
         
     for i in range(len(amountOfTrafficlightMatchesEast)):
-        if((amountOfTrafficlightMatchesEast[i][2] / amountOfTrafficlightMatchesEast[i][1]) > highestAmountOfMatchesNumberEast):
+        if((amountOfTrafficlightMatchesEast[i][2] / amountOfTrafficlightMatchesEast[i][1]) > highestAmountOfMatchesNumberEast and amountOfTrafficlightMatchesEast[i][0] != highestAmountOfMatchesGroupNameEast):
             highestAmountOfMatchesNumberEast = (amountOfTrafficlightMatchesEast[i][2] / amountOfTrafficlightMatchesEast[i][1])
             highestAmountOfMatchesGroupNameEast = amountOfTrafficlightMatchesEast[i][0]
             
@@ -209,8 +218,8 @@ def receiveFromSimulator(jsonSimulator):
                         setBusWest = True
     
     for i in range(len(amountOfTrafficlightMatchesWest)):
-        if(amountOfTrafficlightMatchesWest[i][1] > highestAmountOfMatchesNumberWest):
-            highestAmountOfMatchesNumberWest = amountOfTrafficlightMatchesWest[i][1]
+        if((amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1]) > highestAmountOfMatchesNumberWest and amountOfTrafficlightMatchesWest[i][0] != highestAmountOfMatchesGroupNameWest):
+            highestAmountOfMatchesNumberWest = (amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1])
             highestAmountOfMatchesGroupNameWest = amountOfTrafficlightMatchesWest[i][0]
 
     if(setBusWest == False):

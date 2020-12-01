@@ -159,7 +159,7 @@
     <Compile Include="Assets\stoplichtManager.cs" />
     <None Include="Assets\SocketIO\JSONObject\readme.txt" />
     <None Include="Assets\SocketIO\Readme.txt" />
-    <None Include="Assets\JsonDotNet\link.xml" />
+    <None Include="Assets\materials\JsonDotNet\link.xml" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>F:/School/jaar 3/software development/software-devoplment/unityTest/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
@@ -365,7 +365,7 @@
       <HintPath>F:/unity/2019.2.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>F:/School/jaar 3/software development/software-devoplment/unityTest/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
+      <HintPath>F:/School/jaar 3/software development/software-devoplment/unityTest/Assets/materials/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>F:/unity/2019.2.13f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
