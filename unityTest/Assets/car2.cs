@@ -11,9 +11,14 @@ public class car2 : MonoBehaviour
     public NavMeshAgent agent;
 
     public bool mayMove;
+    public bool mayMove2 = true;
 
     public int timer = 0;
     public int maxTimer = 10;
+
+    public float timeExisted = 0;
+
+    averageTime aT = averageTime.instance;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +33,8 @@ public class car2 : MonoBehaviour
         Debug.DrawRay(transform.position + new Vector3(0f, 0.125f, 0f), transform.TransformDirection(Vector3.forward), Color.red);
         //agent.SetDestination(transform.position);
         agent.isStopped = true;
+
+        timeExisted += Time.deltaTime;
 
         int layerMask = 1 << 11;
 
@@ -48,6 +55,8 @@ public class car2 : MonoBehaviour
                         }
                         else
                         {
+                            aT.addTime(timeExisted);
+
                             Destroy(this.gameObject);
                         }
                     }

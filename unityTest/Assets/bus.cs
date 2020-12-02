@@ -17,6 +17,10 @@ public class bus : MonoBehaviour
 
     public string name;
 
+    public float timeExisted = 0;
+
+    averageTime aT = averageTime.instance;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +34,8 @@ public class bus : MonoBehaviour
         Debug.DrawRay(transform.position + new Vector3(0f, 0.125f, 0f), transform.TransformDirection(Vector3.forward), Color.red);
         //agent.SetDestination(transform.position);
         agent.isStopped = true;
+
+        timeExisted += Time.deltaTime;
 
         int layerMask = 1 << 11;
 
@@ -50,6 +56,8 @@ public class bus : MonoBehaviour
                         }
                         else
                         {
+                            aT.addTime(timeExisted);
+
                             Destroy(this.gameObject);
                         }
                     }

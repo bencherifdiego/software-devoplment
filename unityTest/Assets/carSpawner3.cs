@@ -85,7 +85,7 @@ public class carSpawner3 : MonoBehaviour
             {
                 dist = Vector3.Distance(lastSpawned.transform.position, transform.position);
             }
-            if (dist >= 2)
+            if (dist >= 3)
             {
                 GameObject Car = Instantiate(car, transform.position, transform.rotation);
                 spawnPoint spawnpoint = GetComponent<spawnPoint>();
@@ -124,7 +124,7 @@ public class carSpawner3 : MonoBehaviour
             {
                 dist = Vector3.Distance(lastSpawned.transform.position, transform.position);
             }
-            if (dist >= 2)
+            if (dist >= 3)
             {
                 GameObject Car = Instantiate(bus, transform.position, transform.rotation);
                 if (busPaths == 1)

@@ -190,14 +190,18 @@ def receiveFromSimulator(jsonSimulator):
     for s in jsonSimulator:
         if(s == "B4-1"):
             if(jsonSimulator[s] > 0):
+                print("test")
                 randomChooseGroup = random.randint(0,2)
                 if(randomChooseGroup == 0):
+                    print(1)
                     GroupBW1A()
                     setBusWest = True
                 elif(randomChooseGroup == 1):
+                    print(2)
                     GroupBW1B()
                     setBusWest = True
                 elif(randomChooseGroup == 2):
+                    print(3)
                     GroupBW1C()
                     setBusWest = True
 
@@ -212,8 +216,11 @@ def receiveFromSimulator(jsonSimulator):
             highestAmountOfMatchesNumberWest = (amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1])
             highestAmountOfMatchesGroupNameWest = amountOfTrafficlightMatchesWest[i][0]
 
+    print("test")
+
     if(setBusEast == False):
         arrayGroupHasBeenUsedEast.append(highestAmountOfMatchesGroupNameEast)
+        print(highestAmountOfMatchesGroupNameEast)
         if(highestAmountOfMatchesGroupNameEast == "groep01A"):
             Group01A()
         elif(highestAmountOfMatchesGroupNameEast == "groep01B"):
@@ -237,6 +244,7 @@ def receiveFromSimulator(jsonSimulator):
 
     if(setBusWest == False):
         arrayGroupHasBeenUsedWest.append(highestAmountOfMatchesGroupNameWest)
+        print(highestAmountOfMatchesGroupNameWest)
         if(highestAmountOfMatchesGroupNameWest == "groepW1A"):
             GroupW1A()
         elif(highestAmountOfMatchesGroupNameWest == "groepW2A"):
@@ -728,16 +736,16 @@ class myThread (threading.Thread):
     def run(self):
         while True:
             data = conn.recv(1024)
-            print(time.strftime("%H:%M:%S", time.localtime()), " : message received")
+            #print(time.strftime("%H:%M:%S", time.localtime()), " : message received")
             data = data.decode("utf-8")
-            print(data)
-            print(time.strftime("%H:%M:%S", time.localtime()), data)
+            #print(data)
+            #print(time.strftime("%H:%M:%S", time.localtime()), data)
             splittedData = data.split(":", 1)
             if (len(splittedData[1]) == int(splittedData[0])):
-                print(splittedData[1])
-                print(time.strftime("%H:%M:%S", time.localtime()), " : json correct length")
+                #print(splittedData[1])
+                #print(time.strftime("%H:%M:%S", time.localtime()), " : json correct length")
                 jsonSimulator = json.loads(splittedData[1])
-                print (jsonSimulator)
+                #print (jsonSimulator)
                 if (jsonSimulator != None):
                     receiveFromSimulator(jsonSimulator)  
             else:
@@ -757,7 +765,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
                 Red = jasonRed
                 messageRed = Red.replace("\\", "")
                 messageRed = formatHeader(messageRed)
-                print(messageRed)
+                #print(messageRed)
                 conn.sendall(messageRed.encode("utf-8"))
                 print("sent all red")
                 time.sleep(5)
@@ -766,6 +774,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
                 message = z.replace("\\", "")
                 message = formatHeader(message)
                 conn.sendall(message.encode("utf-8"))
+                print(time.strftime("%H:%M:%S", time.localtime()), jason)
+                print(time.strftime("%H:%M:%S", time.localtime()), jason["B4-1"])
                 print(time.strftime("%H:%M:%S", time.localtime()), " : message sent")
                 time.sleep(sleepTime)
             else:

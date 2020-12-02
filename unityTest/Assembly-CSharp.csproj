@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\averageTime.cs" />
     <Compile Include="Assets\bus.cs" />
     <Compile Include="Assets\busSpawner.cs" />
     <Compile Include="Assets\car.cs" />
