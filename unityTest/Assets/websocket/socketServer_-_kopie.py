@@ -205,16 +205,35 @@ def receiveFromSimulator(jsonSimulator):
                     GroupBW1C()
                     setBusWest = True
 
+    PickOneEast = []
+    PickOneWest = []
 
     for i in range(len(amountOfTrafficlightMatchesEast)):
         if((amountOfTrafficlightMatchesEast[i][2] / amountOfTrafficlightMatchesEast[i][1]) > highestAmountOfMatchesNumberEast and amountOfTrafficlightMatchesEast[i][0] not in arrayGroupHasBeenUsedEast):
             highestAmountOfMatchesNumberEast = (amountOfTrafficlightMatchesEast[i][2] / amountOfTrafficlightMatchesEast[i][1])
             highestAmountOfMatchesGroupNameEast = amountOfTrafficlightMatchesEast[i][0]
-    
+            PickOneEast = []
+            PickOneEast.append(highestAmountOfMatchesGroupNameEast)
+        elif((amountOfTrafficlightMatchesEast[i][2] / amountOfTrafficlightMatchesEast[i][1]) == highestAmountOfMatchesNumberEast):
+            PickOneEast.append(amountOfTrafficlightMatchesEast[i][0])
+
     for i in range(len(amountOfTrafficlightMatchesWest)):
         if((amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1]) > highestAmountOfMatchesNumberWest and amountOfTrafficlightMatchesWest[i][0] not in arrayGroupHasBeenUsedWest):
             highestAmountOfMatchesNumberWest = (amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1])
             highestAmountOfMatchesGroupNameWest = amountOfTrafficlightMatchesWest[i][0]
+            PickOneWest = []
+            PickOneWest.append(highestAmountOfMatchesGroupNameWest)
+        elif((amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1]) == highestAmountOfMatchesNumberWest):
+            PickOneWest.append(amountOfTrafficlightMatchesEast[i][0])
+    
+    LenEast = len(PickOneEast)
+    LenWest = len(PickOneWest)
+
+    if(LenEast > 1):
+        highestAmountOfMatchesGroupNameEast = PickOneEast[random.randint(0,(LenEast-1))]
+
+    if(LenWest > 1):
+        highestAmountOfMatchesGroupNameWest = PickOneWest[random.randint(0,(LenWest-1))]
 
     print("test")
 
