@@ -192,7 +192,6 @@ def receiveFromSimulator(jsonSimulator):
     for s in jsonSimulator:
         if(s == "B4-1"):
             if(jsonSimulator[s] > 0):
-                print("test")
                 randomChooseGroup = random.randint(0,2)
                 if(randomChooseGroup == 0):
                     print(1)

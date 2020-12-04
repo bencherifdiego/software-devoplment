@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class voet : MonoBehaviour
 {
+    public bool noordWaard;
+    public bool oostWaard;
+    public bool zuidWaard;
+    public bool westWaard;
+
     public float speed = 5f;
     public float sped = 0f;
 
