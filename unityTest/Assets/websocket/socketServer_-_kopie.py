@@ -4,18 +4,20 @@ import time
 import threading    
 import random
 
-y = True
-while y == True:
-    receiveFromClient = input("ontvang van simulator? y/n \n")
-    if receiveFromClient != "y":
-        if receiveFromClient != "n":
-            print("verkeerde input, probeer opnieuw.")
-        else:
-            y = False
-    else:
-        y = False
+#y = True
+#while y == True:
+#    receiveFromClient = input("ontvang van simulator? y/n \n")
+#    if receiveFromClient != "y":
+#        if receiveFromClient != "n":
+#            print("verkeerde input, probeer opnieuw.")
+#        else:
+#            y = False
+#    else:
+#        y = False
 
-sleepTime = int(input("delay tussen messages? \n 1 is 1 seconde \n"))
+receiveFromClient = "y"
+
+sleepTime = int(input("delay tussen messages?\n1 is 1 seconde\n"))
 
 def formatHeader(y):
     y = y.replace(" ", "")
@@ -755,14 +757,14 @@ class myThread (threading.Thread):
     def run(self):
         while True:
             data = conn.recv(1024)
-            #print(time.strftime("%H:%M:%S", time.localtime()), " : message received")
+            print(time.strftime("%H:%M:%S", time.localtime()), " : message received")
             data = data.decode("utf-8")
             #print(data)
             #print(time.strftime("%H:%M:%S", time.localtime()), data)
             splittedData = data.split(":", 1)
             if (len(splittedData[1]) == int(splittedData[0])):
                 #print(splittedData[1])
-                #print(time.strftime("%H:%M:%S", time.localtime()), " : json correct length")
+                print(time.strftime("%H:%M:%S", time.localtime()), " : json correct length")
                 jsonSimulator = json.loads(splittedData[1])
                 #print (jsonSimulator)
                 if (jsonSimulator != None):
@@ -793,9 +795,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
                 message = z.replace("\\", "")
                 message = formatHeader(message)
                 conn.sendall(message.encode("utf-8"))
-                print(time.strftime("%H:%M:%S", time.localtime()), jason)
-                print(time.strftime("%H:%M:%S", time.localtime()), jason["B4-1"])
-                print(time.strftime("%H:%M:%S", time.localtime()), " : message sent")
+                #print(time.strftime("%H:%M:%S", time.localtime()), jason)
+                #print(time.strftime("%H:%M:%S", time.localtime()), jason["B4-1"])
+                #print(time.strftime("%H:%M:%S", time.localtime()), " : message sent")
                 time.sleep(sleepTime)
             else:
 

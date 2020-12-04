@@ -90,6 +90,7 @@ MonoBehaviour:
   timer: 0
   maxTimer: 10
   name: 
+  timeExisted: 0
 --- !u!1 &2156837063142230365
 GameObject:
   m_ObjectHideFlags: 0

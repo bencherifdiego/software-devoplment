@@ -157,7 +157,9 @@
     <Compile Include="Assets\spawnPoint.cs" />
     <Compile Include="Assets\stoplicht.cs" />
     <Compile Include="Assets\stoplichtBus.cs" />
+    <Compile Include="Assets\stoplichtFiets.cs" />
     <Compile Include="Assets\stoplichtManager.cs" />
+    <Compile Include="Assets\voet.cs" />
     <None Include="Assets\SocketIO\JSONObject\readme.txt" />
     <None Include="Assets\SocketIO\Readme.txt" />
     <None Include="Assets\materials\JsonDotNet\link.xml" />
