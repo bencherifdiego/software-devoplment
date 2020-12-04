@@ -4,46 +4,45 @@ import time
 import threading    
 import random
 
-#y = True
-#while y == True:
-#    receiveFromClient = input("ontvang van simulator? y/n \n")
-#    if receiveFromClient != "y":
-#        if receiveFromClient != "n":
-#            print("verkeerde input, probeer opnieuw.")
-#        else:
-#            y = False
-#    else:
-#        y = False
-
-receiveFromClient = "y"
-
+#Ask for delay time between sending JSON from controller to simulator
 sleepTime = int(input("delay tussen messages?\n1 is 1 seconde\n"))
 
+#Checks how many characters are in the received JSON
 def formatHeader(y):
     y = y.replace(" ", "")
     x = None
     x = str(len(str(y))) + ":" + str(y)
     x.replace(" ", "")
     return x
+
+#Set empty JSON string of all the trafic lights
 jason = '{"A1-1":0,"A1-2":0,"A1-3":0,"B1-1":0,"B1-2":0,"F1-1":0,"F1-2":0,"V1-1":0,"V1-2":0,"V1-3":0,"V1-4":0,"A2-1":0,"A2-2":0,"A2-3":0,"A2-4":0,"F2-1":0,"F2-2":0,"V2-1":0,"V2-2":0,"V2-3":0,"V2-4":0,"A3-1":0,"A3-2":0,"A3-3":0,"A3-4":0,"A4-1":0,"A4-2":0,"A4-3":0,"A4-4":0,"B4-1":0,"F4-1":0,"F4-2":0,"V4-1":0,"V4-2":0,"V4-3":0,"V4-4":0,"A5-1":0,"A5-2":0,"A5-3":0,"A5-4":0,"F5-1":0,"F5-2":0,"V5-1":0,"V5-2":0,"V5-3":0,"V5-4":0,"A6-1":0,"A6-2":0,"A6-3":0,"A6-4":0}'
 
+#Decode the JSON string
 jason = json.loads(jason)
+
+#Set a seperate JSON string for the red traffic lights
 jasonRed = '{"A1-1":0,"A1-2":0,"A1-3":0,"B1-1":0,"B1-2":0,"F1-1":0,"F1-2":0,"V1-1":0,"V1-2":0,"V1-3":0,"V1-4":0,"A2-1":0,"A2-2":0,"A2-3":0,"A2-4":0,"F2-1":0,"F2-2":0,"V2-1":0,"V2-2":0,"V2-3":0,"V2-4":0,"A3-1":0,"A3-2":0,"A3-3":0,"A3-4":0,"A4-1":0,"A4-2":0,"A4-3":0,"A4-4":0,"B4-1":0,"F4-1":0,"F4-2":0,"V4-1":0,"V4-2":0,"V4-3":0,"V4-4":0,"A5-1":0,"A5-2":0,"A5-3":0,"A5-4":0,"F5-1":0,"F5-2":0,"V5-1":0,"V5-2":0,"V5-3":0,"V5-4":0,"A6-1":0,"A6-2":0,"A6-3":0,"A6-4":0}'
 
 host = '127.0.0.1'
 port = 54000
 
+#Declare two arrays in which the trafficlight(groups) are placed in when they have been called
 arrayGroupHasBeenUsedEast = []
 arrayGroupHasBeenUsedWest = []
 
+#ReceiveFromSimulator function uses JSON data received from the simulator
+#The function calculates which traffic lights should turn on and which should turn off.
 def receiveFromSimulator(jsonSimulator):
+
+    #Checks how many groups have been used, if there are more than 3 groups in the array; remove the first
     if(len(arrayGroupHasBeenUsedWest) > 3):
         arrayGroupHasBeenUsedWest.pop(0)
 
     if(len(arrayGroupHasBeenUsedEast) > 3):
         arrayGroupHasBeenUsedEast.pop(0)
 
-    #car
+    #Arrays of (car) traffic lights. These traffic lights can be turned on at the same time.
     Group01A_array = ["A1-1", "A1-2", "A3-1", "A3-2", "A3-3", "A3-4"]
     Group01B_array = ["A1-1", "A1-2", "A2-1", "A2-2", "A3-3", "A4-4"]
     Group01C_array = ["A1-1", "A1-2", "A1-3", "A2-1", "A2-2"]
@@ -54,13 +53,13 @@ def receiveFromSimulator(jsonSimulator):
     GroupW2B_array = ["A4-3", "A4-4", "A6-1", "A6-2", "A6-3", "A6-4"]
     GroupW3A_array = ["A5-1", "A5-2", "A5-3", "A5-4", "A6-1", "A6-2"]
 
-    #fiets + voet
+    #Arrays of traffic lights with cyclists and pedestrian, combined with the cars. These traffic lights can be turned on at the same time.
     GroupFV01_array = ["A2-3", "A2-4", "A3-3", "A3-4", "F1-1", "F1-2", "V1-1", "V1-2", "V1-3", "V1-4"]
     GroupFV02_array = ["A1-1", "A1-2", "A3-1", "A3-2", "F2-1", "F2-2", "V2-1", "V2-2", "V2-3", "V2-4"]
     GroupFVW1_array = ["A5-1", "A5-2", "A6-1", "A6-2", "F4-1", "F4-2", "V4-1", "V4-2", "V4-3", "V4-4"]
     GroupFVW2_array = ["A4-3", "A4-3", "A6-3", "A6-4", "F5-1", "F5-2", "V5-1", "V5-2", "V5-3", "V5-4"]
 
-    #bus
+    #Arrays of traffic lights with busses combined with the cars. These traffic lights can be turned on at the same time.
     GroupB01A_array = ["A3-1", "A3-2", "A3-3", "A3-4", "B1-1"]
     GroupB01B_array = ["A2-1", "A2-2", "A3-3", "A3-4", "B1-1"]
     GroupB02_array = ["A1-1", "A1-2", "A2-1", "A2-2", "B1-2"]
@@ -68,16 +67,22 @@ def receiveFromSimulator(jsonSimulator):
     GroupBW1B_array = ["A5-3", "A5-4", "A6-1", "A6-2", "B4-1"]
     GroupBW1C_array = ["A6-1", "A6-2", "A6-3", "A6-4", "B4-1"]
     
+    #Declare an empty array
     TrafficLightsThatHasCars = []
+    #Fill the array TrafficLightsThatHasCars with traffic lights (names ex: A4-1) that has cars/busses/cyclists or pedestrians waiting
     for x in jsonSimulator :
         if(jsonSimulator[x] == 1):
             TrafficLightsThatHasCars.append(x)
 
+    #Declare arrays for east and west traffic lights, to check how many matches there are.
     resultsEast = []
     resultsWest = []
+
+    #Declare arrays for counting the amount of matched cars waiting with the traffic lights certain group
     amountOfTrafficlightMatchesEast = []
     amountOfTrafficlightMatchesWest = []
-    
+
+    #Fill the arrays resultsEast+West and amountOfTrafficLightMatchesEast+West with new inner arrays for the amount of arrays declared above.
     for i in range(10):
         resultsEast.append([])
         amountOfTrafficlightMatchesEast.append([])
@@ -85,7 +90,9 @@ def receiveFromSimulator(jsonSimulator):
     for i in range(9):
         resultsWest.append([])
         amountOfTrafficlightMatchesWest.append([])
-
+    
+    #Loops through all the named traffic lights in the array TrafficLightsThatHasCars. 
+    #Then check if the name in the group matches the one in the TrafficLightsThatHasCars array, if so place a 1 if not place a 0
     for i in TrafficLightsThatHasCars:
         resultsEast[0].append(Group01A_array.count(i))
         resultsEast[1].append(Group01B_array.count(i))
@@ -107,6 +114,7 @@ def receiveFromSimulator(jsonSimulator):
         resultsWest[7].append(GroupBW1B_array.count(i))
         resultsWest[8].append(GroupBW1C_array.count(i))
 
+    #append the name of the group in the amountOfTrafficlightMatches arrays and count how many traffic lights are in that group
     amountOfTrafficlightMatchesEast[0].append("groep01A")
     amountOfTrafficlightMatchesEast[0].append(len(Group01A_array))
     amountOfTrafficlightMatchesEast[1].append("groep01B")
@@ -146,6 +154,7 @@ def receiveFromSimulator(jsonSimulator):
     amountOfTrafficlightMatchesWest[8].append("groepBW1C")
     amountOfTrafficlightMatchesWest[8].append(len(GroupBW1C_array))
 
+    #count how many times there is a match between the traffic lights that has cars waiting at them and the traffic lights specified in the group array
     for i in range(10):
         count = 0
         for j in resultsEast[i]:
@@ -160,6 +169,7 @@ def receiveFromSimulator(jsonSimulator):
                 count += 1
         amountOfTrafficlightMatchesWest[i].append(count)
 
+    #Set empty variables for choosing a group to set to green
     highestAmountOfMatchesGroupNameEast = ""
     highestAmountOfMatchesNumberEast = 0
     setBusEast = False
@@ -168,13 +178,17 @@ def receiveFromSimulator(jsonSimulator):
     highestAmountOfMatchesNumberWest = 0
     setBusWest = False
 
+    #set all traffic lights to red
     groepAllRed()
     
     busEastIsSet = False
+    #loop through all the traffic lights in the JSON
     for s in jsonSimulator:
         if(busEastIsSet == False):
             if(s == "B1-1"):
+                #If there is a bus waiting at traffic light B1-1 set that group to green
                 if(jsonSimulator[s] > 0):
+                    #Choose a group to set to green
                     randomChooseGroup = random.randint(0,1)
                     if(randomChooseGroup > 0):
                         GroupB01A()
@@ -184,14 +198,15 @@ def receiveFromSimulator(jsonSimulator):
                         setBusEast = True
                     busEastIsSet = True
             elif(s == "B1-2"):
+                #If there is a bus waiting at traffic light B1-2 set that group to green
                 if(jsonSimulator[s] > 0):
                     GroupB02()
                     setBusEast = True
                     found = True
-
-    for s in jsonSimulator:
         if(s == "B4-1"):
+            #If there is a bus waiting at traffic light B4-1 set that group to green
             if(jsonSimulator[s] > 0):
+                #Choose a group to set to green
                 randomChooseGroup = random.randint(0,2)
                 if(randomChooseGroup == 0):
                     print(1)
@@ -206,41 +221,51 @@ def receiveFromSimulator(jsonSimulator):
                     GroupBW1C()
                     setBusWest = True
 
+    #Declare two empty arrays. These arrays are filled with the groups that have the most amount of matches with where traffic is waiting at a traffic light
     PickOneEast = []
     PickOneWest = []
 
+    #loop x amount of times. X is defined by the length of the amountOfTrafficlightMatchesEast array
     for i in range(len(amountOfTrafficlightMatchesEast)):
+        #checks if amount of matches divided by the length of the amount of traffic lights in that group is greater then the highest amount of matches in east
+        #and checks if the group hasn't been called already in the previous three times (checks in the arrayGroupHasBeenUsedEast array )
         if((amountOfTrafficlightMatchesEast[i][2] / amountOfTrafficlightMatchesEast[i][1]) > highestAmountOfMatchesNumberEast and amountOfTrafficlightMatchesEast[i][0] not in arrayGroupHasBeenUsedEast):
+            #If the amount is higher set the highest amount to the amount of matches in the group divided by the amount of traffic lights in that group
             highestAmountOfMatchesNumberEast = (amountOfTrafficlightMatchesEast[i][2] / amountOfTrafficlightMatchesEast[i][1])
+            #Set the name of the highest group to the current given group name
             highestAmountOfMatchesGroupNameEast = amountOfTrafficlightMatchesEast[i][0]
             PickOneEast = []
+            #Append the name of the group to the PickOneEast array
             PickOneEast.append(highestAmountOfMatchesGroupNameEast)
-        elif((amountOfTrafficlightMatchesEast[i][2] / amountOfTrafficlightMatchesEast[i][1]) == highestAmountOfMatchesNumberEast):
+        #Checks if the amount of matches divided by the length of the amount of traffic lights in that group is equal to the currect highest amount of matches in east
+        elif((amountOfTrafficlightMatchesEast[i][2] / amountOfTrafficlightMatchesEast[i][1]) == highestAmountOfMatchesNumberEast and amountOfTrafficlightMatchesEast[i][0] not in arrayGroupHasBeenUsedEast):
             PickOneEast.append(amountOfTrafficlightMatchesEast[i][0])
 
+    #Same as above but then for west
     for i in range(len(amountOfTrafficlightMatchesWest)):
         if((amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1]) > highestAmountOfMatchesNumberWest and amountOfTrafficlightMatchesWest[i][0] not in arrayGroupHasBeenUsedWest):
             highestAmountOfMatchesNumberWest = (amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1])
             highestAmountOfMatchesGroupNameWest = amountOfTrafficlightMatchesWest[i][0]
             PickOneWest = []
             PickOneWest.append(highestAmountOfMatchesGroupNameWest)
-        elif((amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1]) == highestAmountOfMatchesNumberWest):
+        elif((amountOfTrafficlightMatchesWest[i][2] / amountOfTrafficlightMatchesWest[i][1]) == highestAmountOfMatchesNumberWest and amountOfTrafficlightMatchesWest[i][0] not in arrayGroupHasBeenUsedWest):
             PickOneWest.append(amountOfTrafficlightMatchesEast[i][0])
     
+    #Checks how many groups have an equal amount of traffic waiting divided by the amount of traffic lights in that group
     LenEast = len(PickOneEast)
     LenWest = len(PickOneWest)
 
+    #If there are more then one group that have an equal amount of traffic waiting divided by the amount of traffic lights in that group, pick one group
     if(LenEast > 1):
         highestAmountOfMatchesGroupNameEast = PickOneEast[random.randint(0,(LenEast-1))]
 
     if(LenWest > 1):
         highestAmountOfMatchesGroupNameWest = PickOneWest[random.randint(0,(LenWest-1))]
 
-    print("test")
-
+    #If there is no bus waiting at east, call on the group with the highest amount of traffic waiting
+    #In total there will be one group from east and one from west set to green
     if(setBusEast == False):
         arrayGroupHasBeenUsedEast.append(highestAmountOfMatchesGroupNameEast)
-        print(highestAmountOfMatchesGroupNameEast)
         if(highestAmountOfMatchesGroupNameEast == "groep01A"):
             Group01A()
         elif(highestAmountOfMatchesGroupNameEast == "groep01B"):
@@ -262,9 +287,10 @@ def receiveFromSimulator(jsonSimulator):
         elif(highestAmountOfMatchesGroupNameEast == "groepB02"):
             GroupB02()
 
+    #If there is no bus waiting at west, call on the group with the highest amount of traffic waiting
+    #In total there will be one group from east and one from west set to green
     if(setBusWest == False):
         arrayGroupHasBeenUsedWest.append(highestAmountOfMatchesGroupNameWest)
-        print(highestAmountOfMatchesGroupNameWest)
         if(highestAmountOfMatchesGroupNameWest == "groepW1A"):
             GroupW1A()
         elif(highestAmountOfMatchesGroupNameWest == "groepW2A"):
@@ -284,6 +310,7 @@ def receiveFromSimulator(jsonSimulator):
         elif (highestAmountOfMatchesGroupNameWest == "groepBW1C"):
             GroupBW1C()
 
+#Set traffic lights in this group to green
 def Group01A():
     jason["A1-1"] = 1
     jason["A1-2"] = 1
@@ -292,6 +319,7 @@ def Group01A():
     jason["A3-3"] = 1
     jason["A3-4"] = 1
 
+#Set traffic lights in this group to green
 def Group01B():
     jason["A1-1"] = 1
     jason["A1-2"] = 1
@@ -300,6 +328,7 @@ def Group01B():
     jason["A3-3"] = 1
     jason["A3-4"] = 1
 
+#Set traffic lights in this group to green
 def Group01C():
     jason["A1-1"] = 1
     jason["A1-2"] = 1
@@ -307,6 +336,7 @@ def Group01C():
     jason["A2-1"] = 1
     jason["A2-2"] = 1
 
+#Set traffic lights in this group to green
 def Group02A():
     jason["A2-1"] = 1
     jason["A2-2"] = 1
@@ -315,6 +345,7 @@ def Group02A():
     jason["A3-3"] = 1
     jason["A3-4"] = 1
 
+#Set traffic lights in this group to green
 def Group02B():
     jason["A2-1"] = 1
     jason["A2-2"] = 1
@@ -322,7 +353,8 @@ def Group02B():
     jason["A1-2"] = 1
     jason["A3-3"] = 1
     jason["A3-4"] = 1
-    
+
+#Set traffic lights in this group to green
 def GroupFV01():
     jason["A2-3"] = 1
     jason["A2-4"] = 1
@@ -335,6 +367,7 @@ def GroupFV01():
     jason["V1-3"] = 1
     jason["V1-4"] = 1
 
+#Set traffic lights in this group to green
 def GroupFV02():
     jason["A1-1"] = 1
     jason["A1-2"] = 1
@@ -347,6 +380,7 @@ def GroupFV02():
     jason["V2-3"] = 1
     jason["V2-4"] = 1
 
+#Set traffic lights in this group to green
 def GroupB01A():
     jason["A3-1"] = 1
     jason["A3-2"] = 1
@@ -354,6 +388,7 @@ def GroupB01A():
     jason["A3-4"] = 1
     jason["B1-1"] = 1
 
+#Set traffic lights in this group to green
 def GroupB01B():
     jason["A2-1"] = 1
     jason["A2-2"] = 1
@@ -361,12 +396,14 @@ def GroupB01B():
     jason["A3-4"] = 1
     jason["B1-1"] = 1
 
+#Set traffic lights in this group to green
 def GroupB02():
     jason["A1-1"] = 1
     jason["A1-2"] = 1
     jason["A2-1"] = 1
     jason["B1-2"] = 1
 
+#Set traffic lights in this group to green
 def GroupW1A():
     jason["A4-1"] = 1
     jason["A4-2"] = 1
@@ -375,6 +412,7 @@ def GroupW1A():
     jason["A5-3"] = 1
     jason["A5-4"] = 1
 
+#Set traffic lights in this group to green
 def GroupW2A():
     jason["A4-3"] = 1
     jason["A4-4"] = 1
@@ -383,6 +421,7 @@ def GroupW2A():
     jason["A6-1"] = 1
     jason["A6-2"] = 1
 
+#Set traffic lights in this group to green
 def GroupW2B():
     jason["A4-3"] = 1
     jason["A4-4"] = 1
@@ -391,6 +430,7 @@ def GroupW2B():
     jason["A6-3"] = 1
     jason["A6-4"] = 1
 
+#Set traffic lights in this group to green
 def GroupW3A():
     jason["A5-1"] = 1
     jason["A5-2"] = 1
@@ -399,6 +439,7 @@ def GroupW3A():
     jason["A6-1"] = 1
     jason["A6-2"] = 1
 
+#Set traffic lights in this group to green
 def GroupFVW1():
     jason["A5-1"] = 1
     jason["A5-2"] = 1
@@ -411,6 +452,7 @@ def GroupFVW1():
     jason["V4-3"] = 1
     jason["V4-4"] = 1
 
+#Set traffic lights in this group to green
 def GroupFVW2():
     jason["A4-3"] = 1
     jason["A4-4"] = 1
@@ -423,6 +465,7 @@ def GroupFVW2():
     jason["V5-3"] = 1
     jason["V5-4"] = 1
 
+#Set traffic lights in this group to green
 def GroupBW1A():
     jason["A4-1"] = 1
     jason["A4-2"] = 1
@@ -430,6 +473,7 @@ def GroupBW1A():
     jason["A5-4"] = 1
     jason["B4-1"] = 1
 
+#Set traffic lights in this group to green
 def GroupBW1B():
     jason["A5-3"] = 1
     jason["A5-4"] = 1
@@ -437,38 +481,15 @@ def GroupBW1B():
     jason["A6-2"] = 1
     jason["B4-1"] = 1
 
+#Set traffic lights in this group to green
 def GroupBW1C():
     jason["A6-1"] = 1
     jason["A6-2"] = 1
     jason["A6-3"] = 1
     jason["A6-4"] = 1
     jason["B4-1"] = 1
-    
-def changeToSame(x):
-    jason["A1-1"] = x
-    jason["A1-2"] = x
-    jason["A1-3"] = x
-    jason["A2-1"] = x
-    jason["A2-2"] = x
-    jason["A2-3"] = x
-    jason["A2-4"] = x
-    jason["A3-1"] = x
-    jason["A3-2"] = x
-    jason["A3-3"] = x
-    jason["A3-4"] = x
-    jason["A4-1"] = x
-    jason["A4-2"] = x
-    jason["A4-3"] = x
-    jason["A4-4"] = x
-    jason["A5-1"] = x
-    jason["A5-2"] = x
-    jason["A5-3"] = x
-    jason["A5-4"] = x
-    jason["A6-1"] = x
-    jason["A6-2"] = x
-    jason["A6-3"] = x
-    jason["A6-4"] = x
 
+#Set all traffic lights to red
 def groepAllRed():
     #car
     jason["A1-1"] = 0
@@ -510,245 +531,6 @@ def groepAllRed():
     jason["B1-2"] = 0
     jason["B4-1"] = 0
     
-def groepO1A1():
-    jason["A1-1"] = "1"
-    jason["A1-2"] = "1"
-    jason["A1-3"] = "0"
-    jason["A2-1"] = "0"
-    jason["A2-2"] = "0"
-    jason["A2-3"] = "0"
-    jason["A2-4"] = "0"
-    jason["A3-1"] = "1"
-    jason["A3-2"] = "1"
-    jason["A3-3"] = "1"
-    jason["A3-4"] = "1"
-    jason["A4-1"] = "0"
-    jason["A4-2"] = "0"
-    jason["A4-3"] = "0"
-    jason["A4-4"] = "0"
-    jason["A5-1"] = "0"
-    jason["A5-2"] = "0"
-    jason["A5-3"] = "0"
-    jason["A5-4"] = "0"
-    jason["A6-1"] = "0"
-    jason["A6-2"] = "0"
-    jason["A6-3"] = "0"
-    jason["A6-4"] = "0"
-
-def groepO1B1():
-    jason["A1-1"] = "1"
-    jason["A1-2"] = "1"
-    jason["A1-3"] = "0"
-    jason["A2-1"] = "1"
-    jason["A2-2"] = "1"
-    jason["A2-3"] = "0"
-    jason["A2-4"] = "0"
-    jason["A3-1"] = "0"
-    jason["A3-2"] = "0"
-    jason["A3-3"] = "1"
-    jason["A3-4"] = "1"
-    jason["A4-1"] = "0"
-    jason["A4-2"] = "0"
-    jason["A4-3"] = "0"
-    jason["A4-4"] = "0"
-    jason["A5-1"] = "0"
-    jason["A5-2"] = "0"
-    jason["A5-3"] = "0"
-    jason["A5-4"] = "0"
-    jason["A6-1"] = "0"
-    jason["A6-2"] = "0"
-    jason["A6-3"] = "0"
-    jason["A6-4"] = "0"
-
-def groepO1C1():
-    jason["A1-1"] = "1"
-    jason["A1-2"] = "1"
-    jason["A1-3"] = "1"
-    jason["A2-1"] = "1"
-    jason["A2-2"] = "1"
-    jason["A2-3"] = "0"
-    jason["A2-4"] = "0"
-    jason["A3-1"] = "0"
-    jason["A3-2"] = "0"
-    jason["A3-3"] = "0"
-    jason["A3-4"] = "0"
-    jason["A4-1"] = "0"
-    jason["A4-2"] = "0"
-    jason["A4-3"] = "0"
-    jason["A4-4"] = "0"
-    jason["A5-1"] = "0"
-    jason["A5-2"] = "0"
-    jason["A5-3"] = "0"
-    jason["A5-4"] = "0"
-    jason["A6-1"] = "0"
-    jason["A6-2"] = "0"
-    jason["A6-3"] = "0"
-    jason["A6-4"] = "0"
-
-def groepO3A1():
-    jason["A1-1"] = "0"
-    jason["A1-2"] = "0"
-    jason["A1-3"] = "0"
-    jason["A2-1"] = "1"
-    jason["A2-2"] = "1"
-    jason["A2-3"] = "1"
-    jason["A2-4"] = "1"
-    jason["A3-1"] = "0"
-    jason["A3-2"] = "0"
-    jason["A3-3"] = "1"
-    jason["A3-4"] = "1"
-    jason["A4-1"] = "0"
-    jason["A4-2"] = "0"
-    jason["A4-3"] = "0"
-    jason["A4-4"] = "0"
-    jason["A5-1"] = "0"
-    jason["A5-2"] = "0"
-    jason["A5-3"] = "0"
-    jason["A5-4"] = "0"
-    jason["A6-1"] = "0"
-    jason["A6-2"] = "0"
-    jason["A6-3"] = "0"
-    jason["A6-4"] = "0"
-
-def groepO3C1():
-    jason["A1-1"] = "1"
-    jason["A1-2"] = "1"
-    jason["A1-3"] = "0"
-    jason["A2-1"] = "1"
-    jason["A2-2"] = "1"
-    jason["A2-3"] = "0"
-    jason["A2-4"] = "0"
-    jason["A3-1"] = "0"
-    jason["A3-2"] = "0"
-    jason["A3-3"] = "1"
-    jason["A3-4"] = "1"
-    jason["A4-1"] = "0"
-    jason["A4-2"] = "0"
-    jason["A4-3"] = "0"
-    jason["A4-4"] = "0"
-    jason["A5-1"] = "0"
-    jason["A5-2"] = "0"
-    jason["A5-3"] = "0"
-    jason["A5-4"] = "0"
-    jason["A6-1"] = "0"
-    jason["A6-2"] = "0"
-    jason["A6-3"] = "0"
-    jason["A6-4"] = "0"
-
-def groepW1A1():
-    jason["A1-1"] = "0"
-    jason["A1-2"] = "0"
-    jason["A1-3"] = "0"
-    jason["A2-1"] = "0"
-    jason["A2-2"] = "0"
-    jason["A2-3"] = "0"
-    jason["A2-4"] = "0"
-    jason["A3-1"] = "0"
-    jason["A3-2"] = "0"
-    jason["A3-3"] = "0"
-    jason["A3-4"] = "0"
-    jason["A4-1"] = "1"
-    jason["A4-2"] = "1"
-    jason["A4-3"] = "1"
-    jason["A4-4"] = "1"
-    jason["A5-1"] = "0"
-    jason["A5-2"] = "0"
-    jason["A5-3"] = "1"
-    jason["A5-4"] = "1"
-    jason["A6-1"] = "0"
-    jason["A6-2"] = "0"
-    jason["A6-3"] = "0"
-    jason["A6-4"] = "0"
-
-def groepW2A1():
-    jason["A1-1"] = "0"
-    jason["A1-2"] = "0"
-    jason["A1-3"] = "0"
-    jason["A2-1"] = "0"
-    jason["A2-2"] = "0"
-    jason["A2-3"] = "0"
-    jason["A2-4"] = "0"
-    jason["A3-1"] = "0"
-    jason["A3-2"] = "0"
-    jason["A3-3"] = "0"
-    jason["A3-4"] = "0"
-    jason["A4-1"] = "0"
-    jason["A4-2"] = "0"
-    jason["A4-3"] = "1"
-    jason["A4-4"] = "1"
-    jason["A5-1"] = "0"
-    jason["A5-2"] = "0"
-    jason["A5-3"] = "1"
-    jason["A5-4"] = "1"
-    jason["A6-1"] = "1"
-    jason["A6-2"] = "1"
-    jason["A6-3"] = "0"
-    jason["A6-4"] = "0"
-
-def groepW2B1():
-    jason["A1-1"] = "0"
-    jason["A1-2"] = "0"
-    jason["A1-3"] = "0"
-    jason["A2-1"] = "0"
-    jason["A2-2"] = "0"
-    jason["A2-3"] = "0"
-    jason["A2-4"] = "0"
-    jason["A3-1"] = "0"
-    jason["A3-2"] = "0"
-    jason["A3-3"] = "0"
-    jason["A3-4"] = "0"
-    jason["A4-1"] = "0"
-    jason["A4-2"] = "0"
-    jason["A4-3"] = "1"
-    jason["A4-4"] = "1"
-    jason["A5-1"] = "0"
-    jason["A5-2"] = "0"
-    jason["A5-3"] = "0"
-    jason["A5-4"] = "0"
-    jason["A6-1"] = "1"
-    jason["A6-2"] = "1"
-    jason["A6-3"] = "1"
-    jason["A6-4"] = "1"
-
-def groepW3A1():
-    jason["A1-1"] = "0"
-    jason["A1-2"] = "0"
-    jason["A1-3"] = "0"
-    jason["A2-1"] = "0"
-    jason["A2-2"] = "0"
-    jason["A2-3"] = "0"
-    jason["A2-4"] = "0"
-    jason["A3-1"] = "0"
-    jason["A3-2"] = "0"
-    jason["A3-3"] = "0"
-    jason["A3-4"] = "0"
-    jason["A4-1"] = "0"
-    jason["A4-2"] = "0"
-    jason["A4-3"] = "0"
-    jason["A4-4"] = "0"
-    jason["A5-1"] = "1"
-    jason["A5-2"] = "1"
-    jason["A5-3"] = "1"
-    jason["A5-4"] = "1"
-    jason["A6-1"] = "1"
-    jason["A6-2"] = "1"
-    jason["A6-3"] = "0"
-    jason["A6-4"] = "0"
-
-#jasonTest = '{"A1-1":0,"A1-2":0,"A1-3":0,"B1-1":0,"B1-2":0,"F1-1":0,"F1-2":0,"V1-1":0,"V1-2":0,"V1-3":0,"V1-4":0,"A2-1":0,"A2-2":0,"A2-3":0,"A2-4":0,"F2-1":0,"F2-2":0,"V2-1":0,"V2-2":0,"V2-3":0,"V2-4":0,"A3-1":0,"A3-2":0,"A3-3":0,"A3-4":0,"A4-1":0,"A4-2":0,"A4-3":0,"A4-4":0,"B4-1":0,"F4-1":0,"F4-2":0,"V4-1":0,"V4-2":0,"V4-3":0,"V4-4":0,"A5-1":0,"A5-2":0,"A5-3":0,"A5-4":0,"F5-1":0,"F5-2":0,"V5-1":0,"V5-2":0,"V5-3":0,"V5-4":0,"A6-1":0,"A6-2":0,"A6-3":0,"A6-4":0}'
-#jasonTest = json.loads(jasonTest)
-
-
-#for i in range(30):
-    #print(i)
-
-    #for i in jasonTest:
-        #jasonTest[i] = random.randint(0,1)
-
-    #receiveFromSimulator(jasonTest)
-    #time.sleep(2)
-
-
 class myThread (threading.Thread):
     def __init__(self, threadID):
         threading.Thread.__init__(self)
@@ -758,14 +540,10 @@ class myThread (threading.Thread):
             data = conn.recv(1024)
             print(time.strftime("%H:%M:%S", time.localtime()), " : message received")
             data = data.decode("utf-8")
-            #print(data)
-            #print(time.strftime("%H:%M:%S", time.localtime()), data)
             splittedData = data.split(":", 1)
             if (len(splittedData[1]) == int(splittedData[0])):
-                #print(splittedData[1])
                 print(time.strftime("%H:%M:%S", time.localtime()), " : json correct length")
                 jsonSimulator = json.loads(splittedData[1])
-                #print (jsonSimulator)
                 if (jsonSimulator != None):
                     receiveFromSimulator(jsonSimulator)  
             else:
@@ -781,91 +559,16 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         thread1 = myThread(1)
         thread1.start()
         while True:
-            if receiveFromClient == "y":
-                Red = jasonRed
-                messageRed = Red.replace("\\", "")
-                messageRed = formatHeader(messageRed)
-                #print(messageRed)
-                conn.sendall(messageRed.encode("utf-8"))
-                print("sent all red")
-                time.sleep(5)
+            Red = jasonRed
+            messageRed = Red.replace("\\", "")
+            messageRed = formatHeader(messageRed)
+            conn.sendall(messageRed.encode("utf-8"))
+            print("sent all red")
+            time.sleep(5)
 
-                z = json.dumps(jason)
-                message = z.replace("\\", "")
-                message = formatHeader(message)
-                conn.sendall(message.encode("utf-8"))
-                print(time.strftime("%H:%M:%S", time.localtime()), message)
-                #print(time.strftime("%H:%M:%S", time.localtime()), jason["B4-1"])
-                #print(time.strftime("%H:%M:%S", time.localtime()), " : message sent")
-                time.sleep(sleepTime)
-            else:
-
-                groepAllRed()
-                z = json.dumps(jason)
-                message = formatHeader(z)
-                conn.sendall(message.encode("utf-8"))
-                time.sleep(sleepTime)
-                print("0")
-
-                groepO1A1()
-                z = json.dumps(jason)
-                message = formatHeader(z)
-                conn.sendall(message.encode("utf-8"))
-                time.sleep(sleepTime)
-                print("1")
-
-                groepO1B1()
-                z = json.dumps(jason)
-                message = formatHeader(z)
-                conn.sendall(message.encode("utf-8"))
-                time.sleep(sleepTime)
-                print("2")
-
-                groepO1C1()
-                z = json.dumps(jason)
-                message = formatHeader(z)
-                conn.sendall(message.encode("utf-8"))
-                time.sleep(sleepTime)
-                print("3")
-
-                groepO3A1()
-                z = json.dumps(jason)
-                message = formatHeader(z)
-                conn.sendall(message.encode("utf-8"))
-                time.sleep(sleepTime)
-                print("4")
-
-                groepO3C1()
-                z = json.dumps(jason)
-                message = formatHeader(z)
-                conn.sendall(message.encode("utf-8"))
-                time.sleep(sleepTime)
-                print("5")
-
-                groepW1A1()
-                z = json.dumps(jason)
-                message = formatHeader(z)
-                conn.sendall(message.encode("utf-8"))
-                time.sleep(sleepTime)
-                print("6")
-
-                groepW2A1()
-                z = json.dumps(jason)
-                message = formatHeader(z)
-                conn.sendall(message.encode("utf-8"))
-                time.sleep(sleepTime)
-                print("7")
-
-                groepW2B1()
-                z = json.dumps(jason)
-                message = formatHeader(z)
-                conn.sendall(message.encode("utf-8"))
-                time.sleep(sleepTime)
-                print("8")
-
-                groepW3A1()
-                z = json.dumps(jason)
-                message = formatHeader(z)
-                conn.sendall(message.encode("utf-8"))
-                time.sleep(sleepTime)
-                print("9")
+            z = json.dumps(jason)
+            message = z.replace("\\", "")
+            message = formatHeader(message)
+            conn.sendall(message.encode("utf-8"))
+            print(time.strftime("%H:%M:%S", time.localtime()), message)
+            time.sleep(sleepTime)
