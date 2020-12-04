@@ -1,6 +1,7 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - averageTime
     - bus
     - car2
     - carSpawnManager
@@ -11,9 +12,16 @@ ScriptsOnlyBuild:
     - spawnPoint
     - stoplicht
     - stoplichtBus
+    - voet
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
+    UnityEngine.UI.dll:
+    - UnityEngine.EventSystems.EventSystem
+    - UnityEngine.EventSystems.StandaloneInputModule
+    - UnityEngine.UI.CanvasScaler
+    - UnityEngine.UI.GraphicRaycaster
+    - UnityEngine.UI.Text
   sceneClasses:
     Assets/Scenes/SampleScene.unity:
     - Class: 1
@@ -47,34 +55,56 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9928}
+      Script: {instanceID: 9682}
     - Class: 114
-      Script: {instanceID: 10180}
+      Script: {instanceID: 9716}
     - Class: 114
-      Script: {instanceID: 10396}
+      Script: {instanceID: 9848}
     - Class: 114
-      Script: {instanceID: 10744}
+      Script: {instanceID: 9930}
     - Class: 114
-      Script: {instanceID: 10776}
+      Script: {instanceID: 10182}
     - Class: 114
-      Script: {instanceID: 11040}
+      Script: {instanceID: 10286}
     - Class: 114
-      Script: {instanceID: 11264}
+      Script: {instanceID: 10398}
     - Class: 114
-      Script: {instanceID: 11304}
+      Script: {instanceID: 10746}
     - Class: 114
-      Script: {instanceID: 11502}
+      Script: {instanceID: 10778}
     - Class: 114
-      Script: {instanceID: 11600}
+      Script: {instanceID: 11044}
     - Class: 114
-      Script: {instanceID: 25656}
+      Script: {instanceID: 11166}
+    - Class: 114
+      Script: {instanceID: 11268}
+    - Class: 114
+      Script: {instanceID: 11308}
+    - Class: 114
+      Script: {instanceID: 11506}
+    - Class: 114
+      Script: {instanceID: 11542}
+    - Class: 114
+      Script: {instanceID: 11544}
+    - Class: 114
+      Script: {instanceID: 11606}
+    - Class: 114
+      Script: {instanceID: 50204}
     - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
     - Class: 195
       Script: {instanceID: 0}
     - Class: 196
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
       Script: {instanceID: 0}
     - Class: 238
       Script: {instanceID: 0}
@@ -93,6 +123,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_SelectionCaret
+  - hash:
+      serializedVersion: 2
+      Hash: f04f8e918c460862f39b43921bd4cf28
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: voet
   - hash:
       serializedVersion: 2
       Hash: 87ff43d2baf3385cba327d8f803a4ebb
@@ -293,7 +329,7 @@ ScriptsOnlyBuild:
     className: carSpawner
   - hash:
       serializedVersion: 2
-      Hash: 746536a7b1d5b009bf8d31433312720d
+      Hash: f1ff6fc116dad14f24e68eae65c13814
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: carSpawnManager
@@ -365,7 +401,7 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
-      Hash: e8643eeb5ee2b682111473635e940a93
+      Hash: 15002109188499b4e2c5e053e5558ff2
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: car2
@@ -429,6 +465,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: TimelineAsset
+  - hash:
+      serializedVersion: 2
+      Hash: 0fc7ebc974f8c503603683af353ead83
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: stoplichtFiets
   - hash:
       serializedVersion: 2
       Hash: f472d8a8cd91eddd7fffd18f1578719f
@@ -533,7 +575,7 @@ ScriptsOnlyBuild:
     className: TMP_SubMesh
   - hash:
       serializedVersion: 2
-      Hash: 539811102f27805835cfdc05f3d953bc
+      Hash: 49a01911bf6e283422c9c68663ee96e8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: carSpawner3
@@ -563,6 +605,12 @@ ScriptsOnlyBuild:
     className: StandaloneInputModule
   - hash:
       serializedVersion: 2
+      Hash: a7424933233f074d9b7363a36d0a69a3
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: averageTime
+  - hash:
+      serializedVersion: 2
       Hash: aa88ae22474df55295327e4ee99e5a24
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -587,7 +635,7 @@ ScriptsOnlyBuild:
     className: ToggleGroup
   - hash:
       serializedVersion: 2
-      Hash: 57eb5786531ba9fd79109f223ffc52b1
+      Hash: 1fd9d3c4be455d7344cc563906171d9e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: bus

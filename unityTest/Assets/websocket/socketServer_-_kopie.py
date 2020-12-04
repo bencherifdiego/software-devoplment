@@ -794,7 +794,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
                 message = z.replace("\\", "")
                 message = formatHeader(message)
                 conn.sendall(message.encode("utf-8"))
-                #print(time.strftime("%H:%M:%S", time.localtime()), jason)
+                print(time.strftime("%H:%M:%S", time.localtime()), message)
                 #print(time.strftime("%H:%M:%S", time.localtime()), jason["B4-1"])
                 #print(time.strftime("%H:%M:%S", time.localtime()), " : message sent")
                 time.sleep(sleepTime)
