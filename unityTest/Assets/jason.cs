@@ -10,12 +10,13 @@ public class jason : MonoBehaviour
     string path = "assets/jason_simulation (1).json";
     string json;
     public JObject jobj;
-    public JObject channel;
 
+    /// <summary>
+    /// leest de json uit de file en stelt deze beschikbaar aan andere scripten
+    /// </summary>
     private void Start()
     {
         instance.json = System.IO.File.ReadAllText(path);
         instance.jobj = JObject.Parse(instance.json);
-        instance.channel = (JObject)instance.jobj;
     }
 }

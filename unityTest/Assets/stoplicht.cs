@@ -26,6 +26,9 @@ public class stoplicht : MonoBehaviour
     float timer = 5f;
     float time = 0;
 
+    /// <summary>
+    /// wanneer dit object inspawned wordt het visueele deel van het object uit gezet
+    /// </summary>
     // Start is called before the first frame update
     void Start()
     {
@@ -37,20 +40,25 @@ public class stoplicht : MonoBehaviour
         sl.material = red;
     }
 
+    /// <summary>
+    /// kijkt of het stoplicht op groen of op rood moet
+    /// </summary>
     //Update is called once per frame
     void Update()
     {
+        //als de status van het stoplicht is verranderd
         if (statusChanged)
         {
+            //als de nieuwe status 0 is
             if (status == 0)
             {
+                //verrander stoplicht naar rood
                 StartCoroutine("changeToRed", 5f);
-                //statuss = 0;
-                //sl.material = red;
             }
+            //als de nieuwe status 1 is
             else if (status == 1)
             {
-                //StartCoroutine("changeToGreen", 0.5f);
+                //verrander stoplicht naar groen
                 statuss = 1;
                 sl.material = green;
             }
@@ -58,16 +66,15 @@ public class stoplicht : MonoBehaviour
 
         jason jsn = jason.instance;
 
+        //pas de json aan
         StartCoroutine("changeJson", jsn);
     }
 
-    IEnumerator changeToGreen(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        sl.material = green;
-        statuss = 1;
-    }
-
+    /// <summary>
+    /// zet het stoplicht naar oranje en naar een delay naar rood
+    /// </summary>
+    /// <param name="delay"></param>
+    /// <returns></returns>
     IEnumerator changeToRed(float delay)
     {
         sl.material = orange;
@@ -76,17 +83,27 @@ public class stoplicht : MonoBehaviour
         sl.material = red;
     }
 
+    /// <summary>
+    /// pas de json aan
+    /// </summary>
+    /// <param name="jsn"></param>
+    /// <returns></returns>
     IEnumerator changeJson(jason jsn)
     {
+        //als er een auto voor het stoplicht staat
         if (hasCar == 1)
         {
+            //de json van dit stoplicht wordt op 1 gezet
             jsn.jobj[transform.name] = 1;
         }
+        //als er geen auto voor het stoplicht staat
         else if (hasCar == 0)
         {
+            //de json van dit stoplicht wordt op 0 gezet
             jsn.jobj[transform.name] = 0;
         }
 
+        //wacht 0.2 seconden
         yield return new WaitForSeconds(0.2f);
     }
 }
